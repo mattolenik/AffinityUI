@@ -1,0 +1,7 @@
+*proj.user
+**/obj/*
+**/bin/*
+*.ncb
+*.suo
+AffinityUI.userprefs
+AffinityUI.pidb
