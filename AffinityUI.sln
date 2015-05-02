@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AffinityUI", "AffinityUI\AffinityUI.csproj", "{22A4E171-AA2B-4150-A8A0-348D8134F706}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KspExample", "KspExample\KspExample.csproj", "{99F0CB38-DBCD-4177-AFBF-A8264CE1D669}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,46 @@ Global
 		{22A4E171-AA2B-4150-A8A0-348D8134F706}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22A4E171-AA2B-4150-A8A0-348D8134F706}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22A4E171-AA2B-4150-A8A0-348D8134F706}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99F0CB38-DBCD-4177-AFBF-A8264CE1D669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99F0CB38-DBCD-4177-AFBF-A8264CE1D669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99F0CB38-DBCD-4177-AFBF-A8264CE1D669}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99F0CB38-DBCD-4177-AFBF-A8264CE1D669}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.FileWidth = 120
+		$1.inheritsSet = VisualStudio
+		$1.inheritsScope = text/plain
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.IndentSwitchBody = True
+		$2.IndentBlocksInsideExpressions = True
+		$2.AnonymousMethodBraceStyle = NextLine
+		$2.PropertyBraceStyle = NextLine
+		$2.PropertyGetBraceStyle = NextLine
+		$2.PropertySetBraceStyle = NextLine
+		$2.EventBraceStyle = NextLine
+		$2.EventAddBraceStyle = NextLine
+		$2.EventRemoveBraceStyle = NextLine
+		$2.StatementBraceStyle = NextLine
+		$2.ElseNewLinePlacement = NewLine
+		$2.CatchNewLinePlacement = NewLine
+		$2.FinallyNewLinePlacement = NewLine
+		$2.WhileNewLinePlacement = DoNotCare
+		$2.ArrayInitializerWrapping = DoNotChange
+		$2.ArrayInitializerBraceStyle = NextLine
+		$2.BeforeMethodDeclarationParentheses = False
+		$2.BeforeMethodCallParentheses = False
+		$2.BeforeConstructorDeclarationParentheses = False
+		$2.NewLineBeforeConstructorInitializerColon = NewLine
+		$2.NewLineAfterConstructorInitializerColon = SameLine
+		$2.BeforeDelegateDeclarationParentheses = False
+		$2.NewParentheses = False
+		$2.SpacesBeforeBrackets = False
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

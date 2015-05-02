@@ -62,10 +62,11 @@
     <Compile Include="Binder.cs" />
     <Compile Include="HorizontalPanel.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Window.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-<!--    <PostBuildEvent>copy $(TargetPath) $(AFFINITYUI_POST_TARGET)</PostBuildEvent>-->
+    <!--    <PostBuildEvent>copy $(TargetPath) $(AFFINITYUI_POST_TARGET)</PostBuildEvent>-->
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
