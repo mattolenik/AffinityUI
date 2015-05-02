@@ -11,7 +11,7 @@ namespace AffinityUI
 	/// </summary>
 	public abstract class Composite : Control, IEnumerable<Control>
 	{
-		private IList<Control> children = new List<Control>();
+		IList<Control> children = new List<Control>();
 
 		/// <summary>
 		/// Gets a list of child controls.
@@ -20,7 +20,6 @@ namespace AffinityUI
 		public IList<Control> Children
 		{
 			get { return children; }
-			private set { children = value; }
 		}
 
 		/// <summary>
@@ -94,13 +93,16 @@ namespace AffinityUI
 		/// <see cref="OnEndLayout_GUILayout"/>
 		/// </remarks>
 		protected virtual void OnEndLayout()
-		{
-			if (TargetType == typeof(GUILayout)) {
-				OnEndLayout_GUILayout ();
-			} else if (TargetType == typeof(GUI)) {
-				OnEndLayout_GUI ();
-			}
-		}
+        {
+            if (TargetType == typeof(GUILayout))
+            {
+                OnEndLayout_GUILayout();
+            }
+            else if (TargetType == typeof(GUI))
+            {
+                OnEndLayout_GUI();
+            }
+        }
 
 		/// <summary>
 		/// Called when layout begins using GUI.
@@ -175,7 +177,7 @@ namespace AffinityUI
 		/// <returns></returns>
 		public Composite SetVisible(bool visible)
 		{
-			Visible = visible;
+            Visible.Value = visible;
 			return this;
 		}
 
@@ -206,6 +208,11 @@ namespace AffinityUI
 		/// </summary>
 		public override void Layout()
 		{
+            if (!Visible)
+            {
+                return;
+            }
+
 			if (SetChildSkins)
 			{
 				RecursiveSetSkin(Skin);
@@ -218,10 +225,7 @@ namespace AffinityUI
 
 			foreach (var control in Children)
 			{
-				if (control.Visible)
-				{
-					control.Layout();
-				}
+                control.Layout();
 			}
 
 			OnEndLayout();

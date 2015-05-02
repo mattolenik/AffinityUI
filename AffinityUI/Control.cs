@@ -12,11 +12,6 @@ namespace AffinityUI
 	public abstract class Control
 	{
 		/// <summary>
-		/// Backing field for <see cref="Visible"/> property.
-		/// </summary>
-		private bool _visible;
-
-		/// <summary>
 		/// Type of <see cref="GUI"/>.
 		/// </summary>
 		protected static readonly Type GUIType = typeof(GUI);
@@ -67,15 +62,7 @@ namespace AffinityUI
 			return this as TControl;
 		}
 
-		/// <summary>
-		/// Gets or sets a value indicating whether this <see cref="Control"/> is visible.
-		/// </summary>
-		/// <value><c>true</c> if visible; otherwise, <c>false</c>.</value>
-		public virtual bool Visible
-		{
-			get { return _visible; }
-			set { _visible = value; }
-		}
+        public BindableProperty<Control, bool> Visible { get; private set; }
 
 		/// <summary>
 		/// Performs the necessary calls to UnityGUI to perform layout or updates.
@@ -88,6 +75,10 @@ namespace AffinityUI
 		/// </remarks>
 		public virtual void Layout()
 		{
+            if (!Visible)
+            {
+                return;
+            }
 			LayoutSetSkin();
 
 			if (TargetType == GUIType)
@@ -126,7 +117,7 @@ namespace AffinityUI
 		/// </summary>
 		protected Control()
 		{
-			_visible = true;
+            Visible = new BindableProperty<Control, bool>(this, true);
 		}
 	}
 }

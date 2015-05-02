@@ -38,7 +38,7 @@ namespace AffinityUI
             tabButtons.SelectedProperty.OnPropertyChanged((source, old, nw) => ShowTab(nw));
             pageMap.Add(pageMap.Count, page);
             pages.Add(page);
-            page.Visible = false;
+            page.Visible.Value = false;
 
             // Show the first page
             if (pages.Children.Count == 1)
@@ -57,9 +57,9 @@ namespace AffinityUI
         {
             foreach (var page in pages)
             {
-                page.Visible = false;
+                page.Visible.Value = false;
             }
-            pageMap[index].Visible = true;
+            pageMap[index].Visible.Value = true;
             tabButtons.SelectedProperty.SetIgnoreBinding(index);
             return this;
         }

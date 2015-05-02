@@ -67,7 +67,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUILayout()
 		{
-			Text = GUILayout.TextField(Text, MaxLength, Style, LayoutOptions);
+            Text = GUILayout.TextField(Text, MaxLength, Style, LayoutOptions);
 		}
 	}
 }

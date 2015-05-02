@@ -42,7 +42,6 @@ namespace AffinityUI
 			Self = this;
 			Style = GUI.skin.textArea;
 			TextProperty = new BindableProperty<TextArea, String>(this);
-			Text = "123";
 			MaxLength = Int32.MaxValue;
 		}
 

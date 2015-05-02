@@ -162,6 +162,10 @@ namespace AffinityUI
 		/// </remarks>
 		public override void Layout()
 		{
+            if (!Visible)
+            {
+                return;
+            }
 			UpdateBindings();
 			base.Layout();
 		}

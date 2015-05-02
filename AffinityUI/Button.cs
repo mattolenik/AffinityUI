@@ -16,7 +16,7 @@ namespace AffinityUI
 		/// <summary>
 		/// Occurs when the button is clicked.
 		/// </summary>
-		public event ButtonClickHandler<Button> Clicked;
+        public event ButtonClickHandler<Button> Clicked = delegate{};
 
 		/// <summary>
 		/// Called when the button is clicked.
@@ -53,10 +53,7 @@ namespace AffinityUI
 		{
 			if (value)
 			{
-				if (Clicked != null)
-				{
-					Clicked(this);
-				}
+                Clicked(this);
 			}
 		}
 

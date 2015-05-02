@@ -95,6 +95,11 @@ namespace AffinityUI
 			}
 		}
 
+        public static implicit operator TProperty(BindableProperty<TOwner, TProperty> instance)
+        {
+            return instance.Value;
+        }
+
         /// <summary>
         /// Sets the value but ignores databinding.
         /// </summary>

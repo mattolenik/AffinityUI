@@ -25,12 +25,6 @@ namespace AffinityUI
 		public GUILayoutOption[] LayoutOptions { get; set; }
 
 		/// <summary>
-		/// Gets the <see cref="BindableProperty&lt;TOwner, TProperty&gt;"/> corresponding to the <see cref="Control.Visible"/> property.
-		/// </summary>
-		/// <value>The BindableProperty for the Visible property.</value>
-		public BindableProperty<ControlBase<TSelf>, bool> VisibleProperty { get; private set; }
-
-		/// <summary>
 		/// Gets or sets the object to return in fluent methods. Should be set to
 		/// <c>this</c> by implementing subclass.
 		/// </summary>
@@ -43,17 +37,6 @@ namespace AffinityUI
 		protected ControlBase()
 			: base()
 		{
-			VisibleProperty = new BindableProperty<ControlBase<TSelf>, bool>(this, true);
-		}
-
-		/// <summary>
-		/// Gets or sets a value indicating whether this <see cref="Control"/> is visible.
-		/// </summary>
-		/// <value><c>true</c> if visible; otherwise, <c>false</c>.</value>
-		public override bool Visible
-		{
-			get { return VisibleProperty.Value; }
-			set { VisibleProperty.Value = value; }
 		}
 
 		/// <summary>
@@ -85,7 +68,7 @@ namespace AffinityUI
 		/// <returns>this instance</returns>
 		public TSelf SetVisible(bool visible)
 		{
-			Visible = visible;
+			Visible.Value = visible;
 			return Self;
 		}
 	}

@@ -12,7 +12,7 @@ namespace AffinityUI
 		/// Gets the <see cref="BindableProperty&lt;TOwner, TProperty&gt;"/> corresponding to the <see cref="IsChecked"/> property.
 		/// </summary>
 		/// <value>The BindableProperty for the IsChecked property.</value>
-		public BindableProperty<Toggle, bool> IsCheckedProperty { get; private set; }
+		public BindableProperty<Toggle, bool> IsChecked { get; private set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Toggle"/> class.
@@ -22,7 +22,7 @@ namespace AffinityUI
 		{
 			Self = this;
 			Style = GUI.skin.toggle;
-			IsCheckedProperty = new BindableProperty<Toggle, bool>(this);
+            IsChecked = new BindableProperty<Toggle, bool>(this);
 		}
 
 		/// <summary>
@@ -36,25 +36,13 @@ namespace AffinityUI
 		}
 
 		/// <summary>
-		/// Gets or sets a value indicating whether this instance is checked.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance is checked; otherwise, <c>false</c>.
-		/// </value>
-		public bool IsChecked
-		{
-			get { return IsCheckedProperty.Value; }
-			set { IsCheckedProperty.Value = value; }
-		}
-
-		/// <summary>
 		/// Called when the control is toggled on or off.
 		/// </summary>
 		/// <param name="handler">The event handler method.</param>
 		/// <returns>this instance</returns>
 		public Toggle OnToggled(PropertyChangedEventHandler<Toggle, bool> handler)
 		{
-			IsCheckedProperty.PropertyChanged += handler;
+			IsChecked.PropertyChanged += handler;
 			return this;
 		}
 
@@ -65,7 +53,7 @@ namespace AffinityUI
 		/// <returns>this instance</returns>
 		public Toggle SetIsChecked(bool value)
 		{
-			IsChecked = value;
+			IsChecked.Value = value;
 			return this;
 		}
 
@@ -74,7 +62,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUILayout()
 		{
-			IsChecked = GUILayout.Toggle(IsChecked, Content, Style, LayoutOptions);
+			IsChecked.Value = GUILayout.Toggle(IsChecked, Content, Style, LayoutOptions);
 		}
 	}
 }
