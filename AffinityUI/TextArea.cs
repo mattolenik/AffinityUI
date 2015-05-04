@@ -39,7 +39,7 @@ namespace AffinityUI
 			Self = this;
             Style(GUI.skin.textArea);
 			_text = new BindableProperty<TextArea, String>(this);
-			MaxLength = 500;
+			MaxLength = 50;
 		}
 
 		/// <summary>

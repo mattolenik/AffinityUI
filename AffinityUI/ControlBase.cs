@@ -33,6 +33,12 @@ namespace AffinityUI
 		{
 		}
 
+        public TSelf ID(string id)
+        {
+            Control.AddID(this, id);
+            return Self;
+        }
+
 		/// <summary>
 		/// Sets the position of the control.
 		/// </summary>

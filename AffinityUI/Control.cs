@@ -32,6 +32,23 @@ namespace AffinityUI
 		/// </summary>
 		protected GUISkin _skin;
 
+        static readonly Dictionary<String, Control> controlsWithID = new Dictionary<string, Control>(StringComparer.OrdinalIgnoreCase);
+
+        protected static void AddID(Control control, String id)
+        {
+            controlsWithID[id] = control;
+        }
+
+        public static TControl Find<TControl>(String id) where TControl : Control
+        {
+            Control value;
+            if (controlsWithID.TryGetValue(id, out value))
+            {
+                return value as TControl;
+            }
+            throw new KeyNotFoundException("Could not find control with ID " + id);
+        }
+
 		/// <summary>
 		/// Gets or sets (protected internal) the parent control.
 		/// </summary>

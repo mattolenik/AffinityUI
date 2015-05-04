@@ -51,11 +51,11 @@ namespace KspExample
                                  // when Option1 is true, letting us show/hide it using the Toggle control below
                                 .Visible.BindOneWay(() => Option1)
                             )
-                            .Add(new PasswordField("Password"))
+                            .Add(new PasswordField("Password").ID("pw1"))
                             .Add(new Toggle("Checkbox 2")
-                                             // Bind the value of the checkbox to the Option1 variable
-                                 .IsChecked().BindTwoWay(() => Option1, v => Option1 = v)
-                                             // Print to the console each time the value changes
+                                 // Bind the value of the checkbox to the Option1 variable
+                                .IsChecked().BindTwoWay(() => Option1, v => Option1 = v)
+                                 // Print to the console each time the value changes
                                 .OnToggled((source, old, @new) => print(source.Label() + " is now " + @new)))
                         )
                         .AddPage(
@@ -72,7 +72,7 @@ namespace KspExample
                             "Page 3",
                             new Toggle("Button Again")
                         )
-                    );
+                    ).Title().BindOneWay(()=>"title is " + Control.Find<PasswordField>("pw1").Password());
             }
             gui.Layout();
         }

@@ -5,11 +5,12 @@ namespace AffinityUI
 {
     public class Window : ControlBase<Window>
     {
-        Control _content;
         readonly System.Random _rand = new System.Random();
         readonly int _id;
+        Control _content;
         Rect _windowRect;
-        string _text;
+
+        BindableProperty<Window, String> _text;
 
         public int ID { get { return _id; }}
 
@@ -17,11 +18,12 @@ namespace AffinityUI
         {
             _id = 0;//_rand.Next();
             Self = this;
+            _text = new BindableProperty<Window, string>(this);
         }
 
         public static Window Create<TGuiTarget>(Rect windowRect, string text)
         {
-            var result = new Window{ _windowRect = windowRect, _text = text };
+            var result = new Window{ _windowRect = windowRect }.Title(text);
             result.TargetType = typeof(TGuiTarget);
             if (result.TargetType != typeof(GUILayout) &&
                 result.TargetType != typeof(GUI))
@@ -35,6 +37,17 @@ namespace AffinityUI
         {
             _content = content;
             _content.TargetType = TargetType;
+            return this;
+        }
+
+        public BindableProperty<Window, String> Title()
+        {
+            return _text;
+        }
+
+        public Window Title(String text)
+        {
+            _text.Value = text;
             return this;
         }
 
