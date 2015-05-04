@@ -17,41 +17,20 @@ namespace AffinityUI
 		/// <value>The content.</value>
 		public GUIContent Content { get; set; }
 
-		/// <summary>
-		/// Gets the <see cref="BindableProperty&lt;TOwner, TProperty&gt;"/> corresponding to the <see cref="Label"/> property.
-		/// </summary>
-		/// <value>The label property.</value>
-		public BindableProperty<Area, String> LabelProperty { get; private set; }
+        BindableProperty<Area, String> _label;
 
-		/// <summary>
-		/// Gets or sets the text of the <see cref="Content"/> property.
-		/// </summary>
-		/// <value>The label text.</value>
-		public String Label
-		{
-			get { return Content.text; }
-			set
-			{
-				Content.text = value;
-				LabelProperty.Value = value;
-			}
-		}
+        public BindableProperty<Area, String> Label()
+        {
+            return _label;
+        }
 
-		/// <summary>
-		/// Gets or sets the image of the <see cref="Content"/> property.
-		/// </summary>
-		/// <value>The image.</value>
-		public Texture Image
-		{
-			get { return Content.image; }
-			set { Content.image = value; }
-		}
+        public Area Label(string text)
+        {
+            _label.Value = text;
+            return this;
+        }
 
-		/// <summary>
-		/// Gets or sets the dimensions.
-		/// </summary>
-		/// <value>The dimensions.</value>
-		public Rect Dimensions { get; set; }
+        Rect _dimensions;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Area"/> class.
@@ -60,7 +39,7 @@ namespace AffinityUI
 			: base()
 		{
 			Content = new GUIContent();
-			LabelProperty = new BindableProperty<Area, String>(this);
+			_label = new BindableProperty<Area, String>(this);
 		}
 
 		/// <summary>
@@ -70,7 +49,7 @@ namespace AffinityUI
 		public Area(Rect dimensions)
 			: this()
 		{
-			Dimensions = dimensions;
+			_dimensions = dimensions;
 		}
 
 		/// <summary>
@@ -78,33 +57,32 @@ namespace AffinityUI
 		/// </summary>
 		/// <param name="dimensions">The dimensions.</param>
 		/// <returns>this instance</returns>
-		public Area SetDimensions(Rect dimensions)
+		public Area Dimensions(Rect dimensions)
 		{
-			Dimensions = dimensions;
+            _dimensions = dimensions;
 			return this;
 		}
 
-		/// <summary>
-		/// Sets the <see cref="Label"/> property.
-		/// </summary>
-		/// <param name="text">The label text.</param>
-		/// <returns>this instance</returns>
-		public Area SetLabel(String text)
-		{
-			Label = text;
-			return this;
-		}
+        public Rect Dimensions()
+        {
+            return _dimensions;
+        }
 
 		/// <summary>
 		/// Sets the <see cref="Image"/> property.
 		/// </summary>
 		/// <param name="image">The image.</param>
 		/// <returns>this instance</returns>
-		public Area SetImage(Texture image)
+		public Area Image(Texture image)
 		{
-			Image = image;
+            Content.image = image;
 			return this;
 		}
+
+        public Texture Image()
+        {
+            return Content.image;
+        }
 
 		/// <summary>
 		/// Called when layout is done using GUI.
@@ -113,12 +91,13 @@ namespace AffinityUI
 		{
 			throw new NotSupportedException("GUI is not supported by the Area control.");
 		}
+
 		/// <summary>
 		/// Called when layout begins when using GUILayout.
 		/// </summary>
 		protected override void OnBeginLayout_GUILayout()
 		{
-			GUILayout.BeginArea(Dimensions, Label);
+            GUILayout.BeginArea(_dimensions, Label());
 		}
 
 		/// <summary>

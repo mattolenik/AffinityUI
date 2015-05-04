@@ -11,7 +11,7 @@ namespace AffinityUI
 	/// </summary>
 	public abstract class Composite : Control, IEnumerable<Control>
 	{
-		IList<Control> children = new List<Control>();
+		 IList<Control> children = new List<Control>();
 
 		/// <summary>
 		/// Gets a list of child controls.
@@ -285,9 +285,4 @@ namespace AffinityUI
 
         #endregion
     }
-
-    /// <summary>
-    /// Default composite implementation.
-    /// </summary>
-    internal class DefaultComposite : Composite { }
 }

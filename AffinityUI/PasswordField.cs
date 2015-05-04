@@ -8,11 +8,7 @@ namespace AffinityUI
 	/// </summary>
 	public class PasswordField : ContentControl<PasswordField>
 	{
-		/// <summary>
-		/// Gets the <see cref="BindableProperty&lt;TOwner, TProperty&gt;"/> corresponding to the <see cref="Password"/> property.
-		/// </summary>
-		/// <value>The BindableProperty for the Password property.</value>
-		public BindableProperty<PasswordField, String> PasswordProperty { get; private set; }
+        BindableProperty<PasswordField, String> _password;
 
 		/// <summary>
 		/// Gets or sets the mask character, used only by GUI and GUILayout contexts.
@@ -26,15 +22,16 @@ namespace AffinityUI
 		/// <value>The length of the max.</value>
 		public int MaxLength { get; set; }
 
-		/// <summary>
-		/// Gets or sets the password.
-		/// </summary>
-		/// <value>The password.</value>
-		public String Password
-		{
-			get { return PasswordProperty.Value; }
-			set { PasswordProperty.Value = value; }
-		}
+        public BindableProperty<PasswordField, String> Password()
+        {
+            return _password;
+        }
+
+        public PasswordField Password(String text)
+        {
+            _password.Value = text;
+            return this;
+        }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PasswordField"/> class.
@@ -45,9 +42,8 @@ namespace AffinityUI
 			Self = this;
 			Mask = '*';
 			MaxLength = Int32.MaxValue;
-			Style = GUI.skin.textField;
-			PasswordProperty = new BindableProperty<PasswordField, String>(this);
-			Password = "";
+            Style(GUI.skin.textField);
+            _password = new BindableProperty<PasswordField, String>(this, String.Empty);
 		}
 
 		/// <summary>
@@ -57,7 +53,7 @@ namespace AffinityUI
 		public PasswordField(String label)
 			: this()
 		{
-			Label = label;
+            Label(label);
 		}
 
 		/// <summary>
@@ -67,7 +63,7 @@ namespace AffinityUI
 		/// <returns>this instance</returns>
 		public PasswordField OnPasswordChanged(PropertyChangedEventHandler<PasswordField, String> handler)
 		{
-			PasswordProperty.PropertyChanged += handler;
+			_password.PropertyChanged += handler;
 			return this;
 		}
 
@@ -76,7 +72,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUI()
 		{
-			Password = GUI.PasswordField(Position, Password, Mask, MaxLength, Style);
+            Password(GUI.PasswordField(Position(), Password(), Mask, MaxLength, Style()));
 		}
 
 		/// <summary>
@@ -84,7 +80,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUILayout()
 		{
-			Password = GUILayout.PasswordField(Password, Mask, MaxLength, Style, LayoutOptions);
+            Password(GUILayout.PasswordField(Password(), Mask, MaxLength, Style(), LayoutOptions()));
 		}
 	}
 }

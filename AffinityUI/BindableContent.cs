@@ -11,44 +11,53 @@ namespace AffinityUI
     /// </summary>
     public class BindableContent
     {
-        public BindableProperty<BindableContent, String> LabelProperty { get; private set; }
+        BindableProperty<BindableContent, String> _label;
 
-        public BindableProperty<BindableContent, String> TooltipProperty { get; private set; }
+        BindableProperty<BindableContent, String> _tooltip;
 
         public GUIContent Content { get; set; }
 
-        public String Label
+        public BindableProperty<BindableContent, String> Label()
         {
-            get { return LabelProperty.Value; }
-            set
-            {
-                LabelProperty.Value = value;
-                Content.text = value;
-            }
+            return _label;
         }
 
-        public String Tooltip
+        public BindableContent Label(String text)
         {
-            get { return TooltipProperty.Value; }
-            set
-            {
-                TooltipProperty.Value = value;
-                Content.tooltip = value;
-            }
+            _label.Value = text;
+            Content.text = text;
+            return this;
         }
 
-        public Texture Image
+        public BindableProperty<BindableContent, String>Tooltip()
         {
-            get { return Content.image; }
-            set { Content.image = value; }
+            return _tooltip;
+        }
+
+        public BindableContent Tooltip(string text)
+        {
+            _tooltip.Value = text;
+            Content.tooltip = text;
+            return this;
+        }
+
+        public Texture Image()
+        {
+            return Content.image;
+        }
+
+        public BindableContent Image(Texture image)
+        {
+            Content.image = image;
+            return this;
         }
 
         public BindableContent()
         {
             Content = new GUIContent();
 
-            LabelProperty = new BindableProperty<BindableContent, String>(this);
-            TooltipProperty = new BindableProperty<BindableContent, String>(this);
+            _label = new BindableProperty<BindableContent, String>(this);
+            _tooltip = new BindableProperty<BindableContent, String>(this);
         }
     }
 }

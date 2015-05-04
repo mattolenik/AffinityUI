@@ -3,24 +3,25 @@ using UnityEngine;
 
 namespace AffinityUI
 {
-    public class Window : Control
+    public class Window : ControlBase<Window>
     {
         Control _content;
-        static readonly System.Random _rand;
+        readonly System.Random _rand = new System.Random();
         readonly int _id;
-        Rect _dimensions;
+        Rect _windowRect;
         string _text;
 
         public int ID { get { return _id; }}
 
-        public Window()
+        protected Window() : base()
         {
-            _id = _rand.Next();
+            _id = 0;//_rand.Next();
+            Self = this;
         }
 
-        public static Window Create<TGuiTarget>(Rect dimensions, string text)
+        public static Window Create<TGuiTarget>(Rect windowRect, string text)
         {
-            var result = new Window{ _dimensions = dimensions, _text = text };
+            var result = new Window{ _windowRect = windowRect, _text = text };
             result.TargetType = typeof(TGuiTarget);
             if (result.TargetType != typeof(GUILayout) &&
                 result.TargetType != typeof(GUI))
@@ -30,19 +31,21 @@ namespace AffinityUI
             return result;
         }
 
-        public Window SetContent(Control content)
+        public Window Content(Control content)
         {
             _content = content;
+            _content.TargetType = TargetType;
             return this;
         }
 
         protected override void Layout_GUI()
         {
+            _windowRect = GUI.Window(_id, _windowRect, windowFunc, _text);
         }
 
         protected override void Layout_GUILayout()
         {
-            GUILayout.Window(_id, _dimensions, windowFunc, _text);
+            _windowRect = GUILayout.Window(_id, _windowRect, windowFunc, _text, LayoutOptions());
         }
 
         void windowFunc(int windowID)

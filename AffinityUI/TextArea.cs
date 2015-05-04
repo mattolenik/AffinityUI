@@ -17,22 +17,19 @@ namespace AffinityUI
 		/// <value>The maximum text length.</value>
 		public int MaxLength { get; set; }
 
-		/// <summary>
-		/// Gets the <see cref="BindableProperty&lt;TOwner, TProperty&gt;"/> corresponding to the <see cref="Text"/> property.
-		/// </summary>
-		/// <value>The BindableProperty for the Text property.</value>
-		public BindableProperty<TextArea, String> TextProperty { get; private set; }
+        BindableProperty<TextArea, String> _text;
 
-		/// <summary>
-		/// Gets or sets the text.
-		/// </summary>
-		/// <value>The text.</value>
-		public String Text
-		{
-			get { return TextProperty.Value; }
-			set { TextProperty.Value = value; }
-		}
+        public BindableProperty<TextArea, String> Text()
+        {
+            return _text;
+        }
 
+        public TextArea Text(string text)
+        {
+            _text.Value = text;
+            return this;
+        }
+		
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TextArea"/> class.
 		/// </summary>
@@ -40,8 +37,8 @@ namespace AffinityUI
 			: base()
 		{
 			Self = this;
-			Style = GUI.skin.textArea;
-			TextProperty = new BindableProperty<TextArea, String>(this);
+            Style(GUI.skin.textArea);
+			_text = new BindableProperty<TextArea, String>(this);
 			MaxLength = Int32.MaxValue;
 		}
 
@@ -52,7 +49,7 @@ namespace AffinityUI
 		public TextArea(String label)
 			: this()
 		{
-			Label = label;
+            Label(label);
 		}
 
 		/// <summary>
@@ -60,7 +57,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUI()
 		{
-			Text = GUI.TextArea(Position, Text, MaxLength, Style);
+            Text(GUI.TextArea(Position(), Text(), MaxLength, Style()));
 		}
 
 		/// <summary>
@@ -68,7 +65,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUILayout()
 		{
-			Text = GUILayout.TextArea(Text, MaxLength, Style, LayoutOptions);
+            Text(GUILayout.TextArea(Text(), MaxLength, Style(), LayoutOptions()));
 		}
 	}
 }

@@ -7,12 +7,8 @@ namespace AffinityUI
 	/// A checkbox toggle.
 	/// </summary>
 	public class Toggle : ContentControl<Toggle>
-	{
-		/// <summary>
-		/// Gets the <see cref="BindableProperty&lt;TOwner, TProperty&gt;"/> corresponding to the <see cref="IsChecked"/> property.
-		/// </summary>
-		/// <value>The BindableProperty for the IsChecked property.</value>
-		public BindableProperty<Toggle, bool> IsChecked { get; private set; }
+    {
+        BindableProperty<Toggle, bool> _isChecked;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Toggle"/> class.
@@ -21,8 +17,8 @@ namespace AffinityUI
 			: base()
 		{
 			Self = this;
-			Style = GUI.skin.toggle;
-            IsChecked = new BindableProperty<Toggle, bool>(this);
+            Style(GUI.skin.toggle);
+            _isChecked = new BindableProperty<Toggle, bool>(this);
 		}
 
 		/// <summary>
@@ -32,7 +28,7 @@ namespace AffinityUI
 		public Toggle(String label)
 			: this()
 		{
-			Label = label;
+            Label(label);
 		}
 
 		/// <summary>
@@ -42,18 +38,23 @@ namespace AffinityUI
 		/// <returns>this instance</returns>
 		public Toggle OnToggled(PropertyChangedEventHandler<Toggle, bool> handler)
 		{
-			IsChecked.PropertyChanged += handler;
+			_isChecked.PropertyChanged += handler;
 			return this;
 		}
+
+        public BindableProperty<Toggle, bool> IsChecked()
+        {
+            return _isChecked;
+        }
 
 		/// <summary>
 		/// Sets the initial toggle value.
 		/// </summary>
 		/// <param name="value">The initial value.</param>
 		/// <returns>this instance</returns>
-		public Toggle SetIsChecked(bool value)
+		public Toggle IsChecked(bool value)
 		{
-			IsChecked.Value = value;
+			_isChecked.Value = value;
 			return this;
 		}
 
@@ -62,7 +63,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUILayout()
 		{
-			IsChecked.Value = GUILayout.Toggle(IsChecked, Content, Style, LayoutOptions);
+            _isChecked.Value = GUILayout.Toggle(_isChecked, Content(), Style(), LayoutOptions());
 		}
 	}
 }

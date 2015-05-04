@@ -12,17 +12,9 @@ namespace AffinityUI
 	/// <typeparam name="TSelf">The type of the implementing subclass.</typeparam>
 	public abstract class ControlBase<TSelf> : Control where TSelf : Control
 	{
-		/// <summary>
-		/// Gets or sets the position.
-		/// </summary>
-		/// <value>The position.</value>
-		public Rect Position { get; set; }
+        Rect _position;
 
-		/// <summary>
-		/// Gets or sets the layout options.
-		/// </summary>
-		/// <value>The layout options.</value>
-		public GUILayoutOption[] LayoutOptions { get; set; }
+        GUILayoutOption[] _layoutOptions;
 
 		/// <summary>
 		/// Gets or sets the object to return in fluent methods. Should be set to
@@ -44,22 +36,32 @@ namespace AffinityUI
 		/// </summary>
 		/// <param name="position">The position.</param>
 		/// <returns>this instance</returns>
-		public TSelf SetPosition(Rect position)
+		public TSelf Position(Rect position)
 		{
-			Position = position;
+            _position = position;
 			return Self;
 		}
+
+        public Rect Position()
+        {
+            return _position;
+        }
 
 		/// <summary>
 		/// Sets the layout options to use.
 		/// </summary>
 		/// <param name="options">The options.</param>
 		/// <returns>this instance</returns>
-		public TSelf SetLayoutOptions(params GUILayoutOption[] options)
+		public TSelf LayoutOptions(params GUILayoutOption[] options)
 		{
-			LayoutOptions = options;
+            LayoutOptions(options);
 			return Self;
 		}
+
+        public GUILayoutOption[] LayoutOptions()
+        {
+            return _layoutOptions;
+        }
 
 		/// <summary>
 		/// Sets the <see cref="Control.Visible"/> property.

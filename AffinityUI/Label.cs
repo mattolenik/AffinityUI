@@ -18,7 +18,7 @@ namespace AffinityUI
 			: base()
 		{
 			Self = this;
-			Style = GUI.skin.label;
+            Style(GUI.skin.label);
 		}
 
 		/// <summary>
@@ -28,7 +28,7 @@ namespace AffinityUI
 		public Label(String text)
 			: this()
 		{
-			SetContent(new GUIContent(text));
+            Content(new GUIContent(text));
 		}
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUI()
 		{
-			GUI.Label(Position, Content, Style);
+            GUI.Label(Position(), Content(), Style());
 		}
 
 		/// <summary>
@@ -44,7 +44,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUILayout()
 		{
-			GUILayout.Label(Content, Style, LayoutOptions);
+            GUILayout.Label(Content(), Style(), LayoutOptions());
 		}
 	}
 }

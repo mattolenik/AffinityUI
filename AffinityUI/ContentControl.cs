@@ -13,21 +13,13 @@ namespace AffinityUI
 	/// <typeparam name="TSelf">The type of the implementing subclass.</typeparam>
 	public abstract class ContentControl<TSelf> : ControlBase<TSelf> where TSelf : Control
 	{
-		private GUIContent _content = new GUIContent();
+		GUIContent _content = new GUIContent();
 
-		private GUIStyle _style = GUIStyle.none;
+		GUIStyle _style = GUIStyle.none;
 
-		/// <summary>
-		/// Gets the <see cref="BindableProperty&lt;TOwner, TProperty&gt;"/> corresponding to the <see cref="Label"/> property.
-		/// </summary>
-		/// <value>The BindableProperty for the Label property.</value>
-		public BindableProperty<ContentControl<TSelf>, String> LabelProperty { get; private set; }
+        BindableProperty<ContentControl<TSelf>, String> _label;
 
-		/// <summary>
-		/// Gets the <see cref="BindableProperty&lt;TOwner, TProperty&gt;"/> corresponding to the <see cref="Tooltip"/> property.
-		/// </summary>
-		/// <value>The BindableProperty for the Tooltip property.</value>
-		public BindableProperty<ContentControl<TSelf>, String> TooltipProperty { get; private set; }
+        BindableProperty<ContentControl<TSelf>, String> _tooltip;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ContentControl&lt;TSelf&gt;"/> class.
@@ -35,121 +27,66 @@ namespace AffinityUI
 		protected ContentControl()
 			: base()
 		{
-			LabelProperty = new BindableProperty<ContentControl<TSelf>, String>(this);
-			TooltipProperty = new BindableProperty<ContentControl<TSelf>, String>(this);
+			_label = new BindableProperty<ContentControl<TSelf>, String>(this);
+			_tooltip = new BindableProperty<ContentControl<TSelf>, String>(this);
 		}
 
-		/// <summary>
-		/// Gets or sets the GUI content.
-		/// </summary>
-		/// <value>The content.</value>
-		public GUIContent Content
-		{
-			get { return _content; }
-			set { _content = value; }
-		}
+        public GUIContent Content()
+        {
+            return _content;
+        }
 
-		/// <summary>
-		/// Gets or sets the text of the <see cref="Content"/> property.
-		/// </summary>
-		/// <value>The label text.</value>
-		public String Label
-		{
-			get { return LabelProperty.Value; }
-			set
-			{
-				LabelProperty.Value = value;
-				_content.text = value;
-			}
-		}
+        public TSelf Content(GUIContent content)
+        {
+            _content = content;
+            return Self;
+        }
 
-		/// <summary>
-		/// Gets or sets the tooltip text of the <see cref="Content"/> property.
-		/// </summary>
-		/// <value>The tooltip text.</value>
-		public String Tooltip
-		{
-			get { return TooltipProperty.Value; }
-			set
-			{
-				TooltipProperty.Value = value;
-				_content.tooltip = value;
-			}
-		}
+        public BindableProperty<ContentControl<TSelf>, String> Label()
+        {
+            return _label;
+        }
 
-		/// <summary>
-		/// Gets or sets the image of the <see cref="Content"/> property.
-		/// </summary>
-		/// <value>The image.</value>
-		public Texture Image
-		{
-			get { return _content.image; }
-			set { _content.image = value; }
-		}
+        public TSelf Label(String text)
+        {
+            _label.Value = text;
+            _content.text = text;
+            return Self;
+        }
+            
+        public BindableProperty<ContentControl<TSelf>, String> Tooltip()
+        {
+            return _tooltip;
+        }
 
-		/// <summary>
-		/// Gets or sets the Unity GUI style.
-		/// </summary>
-		/// <value>The style.</value>
-		public GUIStyle Style
-		{
-			get { return _style; }
-			set { _style = value; }
-		}
+        public TSelf Tooltip(String text)
+        {
+            _tooltip.Value = text;
+            _content.tooltip = text;
+            return Self;
+        }
 
-		/// <summary>
-		/// Sets the <see cref="Content"/> property.
-		/// </summary>
-		/// <param name="content">The content.</param>
-		/// <returns>this instance</returns>
-		public TSelf SetContent(GUIContent content)
-		{
-			this._content = content;
-			return Self;
-		}
+        public Texture Image()
+        {
+            return _content.image;
+        }
 
-		/// <summary>
-		/// Sets the <see cref="Label"/> property.
-		/// </summary>
-		/// <param name="text">The label text.</param>
-		/// <returns>this instance</returns>
-		public TSelf SetLabel(String text)
-		{
-			Label = text;
-			return Self;
-		}
+        public TSelf Image(Texture image)
+        {
+            _content.image = image;
+            return Self;
+        }
 
-		/// <summary>
-		/// Sets the <see cref="Image"/> property.
-		/// </summary>
-		/// <param name="image">The image.</param>
-		/// <returns>this instance</returns>
-		public TSelf SetImage(Texture image)
-		{
-			_content.image = image;
-			return Self;
-		}
+        public GUIStyle Style()
+        {
+            return _style;
+        }
 
-		/// <summary>
-		/// Sets the tooltip text.
-		/// </summary>
-		/// <param name="text">The tooltip text.</param>
-		/// <returns>this instance</returns>
-		public TSelf SetTooltip(String text)
-		{
-			Tooltip = text;
-			return Self;
-		}
-
-		/// <summary>
-		/// Sets the GUI style.
-		/// </summary>
-		/// <returns>this instance</returns>
-		public TSelf SetStyle(GUIStyle style)
-		{
-			this._style = style;
-			return Self;
-		}
+        public TSelf Style(GUIStyle style)
+        {
+            _style = style;
+            return Self;
+        }
 
 		/// <summary>
 		/// Performs the necessary calls to UnityGUI to perform layout or updates.
@@ -176,15 +113,15 @@ namespace AffinityUI
 		/// </summary>
 		protected virtual void UpdateBindings()
 		{
-			if (LabelProperty.IsBound)
+			if (_label.IsBound)
 			{
-				LabelProperty.UpdateBinding();
-				_content.text = LabelProperty.Value;
+				_label.UpdateBinding();
+				_content.text = _label.Value;
 			}
-			if (TooltipProperty.IsBound)
+			if (_tooltip.IsBound)
 			{
-				TooltipProperty.UpdateBinding();
-				_content.tooltip = TooltipProperty.Value;
+				_tooltip.UpdateBinding();
+				_content.tooltip = _tooltip.Value;
 			}
 		}
 	}

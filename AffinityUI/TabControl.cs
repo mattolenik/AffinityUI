@@ -11,11 +11,13 @@ namespace AffinityUI
     /// </summary>
     public class TabControl : Composite
     {
-        private SelectionGrid tabButtons = new SelectionGrid();
+        class DefaultComposite : Composite { }
 
-        private Composite pages = new DefaultComposite();
+        SelectionGrid tabButtons = new SelectionGrid();
 
-        private Dictionary<int, Control> pageMap = new Dictionary<int, Control>();
+        Composite pages = new DefaultComposite();
+
+        Dictionary<int, Control> pageMap = new Dictionary<int, Control>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TabControl"/> class.
@@ -34,8 +36,8 @@ namespace AffinityUI
         /// <returns>this instance</returns>
         public TabControl AddPage(String name, Control page)
         {
-            tabButtons.AddButton(new BindableContent { Label = name });
-            tabButtons.SelectedProperty.OnPropertyChanged((source, old, nw) => ShowTab(nw));
+            tabButtons.AddButton(new BindableContent().Label(name));
+            tabButtons.Selected().OnPropertyChanged((source, old, nw) => ShowTab(nw));
             pageMap.Add(pageMap.Count, page);
             pages.Add(page);
             page.Visible.Value = false;
@@ -60,7 +62,7 @@ namespace AffinityUI
                 page.Visible.Value = false;
             }
             pageMap[index].Visible.Value = true;
-            tabButtons.SelectedProperty.SetIgnoreBinding(index);
+            tabButtons.Selected().SetIgnoreBinding(index);
             return this;
         }
     }

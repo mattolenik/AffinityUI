@@ -17,21 +17,18 @@ namespace AffinityUI
 		/// <value>The maximum text length.</value>
 		public int MaxLength { get; set; }
 
-		/// <summary>
-		/// Gets the <see cref="BindableProperty&lt;TOwner, TProperty&gt;"/> corresponding to the <see cref="Text"/> property.
-		/// </summary>
-		/// <value>The BindableProperty for the Text property.</value>
-		public BindableProperty<TextField, String> TextProperty { get; private set; }
+        BindableProperty<TextField, String> _text;
 
-		/// <summary>
-		/// Gets or sets the text.
-		/// </summary>
-		/// <value>The text.</value>
-		public String Text
-		{
-			get { return TextProperty.Value; }
-			set { TextProperty.Value = value; }
-		}
+        public BindableProperty<TextField, String> Text()
+        {
+            return _text;
+        }
+
+        public TextField Text(string text)
+        {
+            _text.Value = text;
+            return this;
+        }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TextField"/> class.
@@ -40,8 +37,8 @@ namespace AffinityUI
 			: base()
 		{
 			Self = this;
-			Style = GUI.skin.textField;
-			TextProperty = new BindableProperty<TextField, String>(this);
+            Style(GUI.skin.textField);
+			_text = new BindableProperty<TextField, String>(this);
 			MaxLength = Int32.MaxValue;
 		}
 
@@ -51,7 +48,7 @@ namespace AffinityUI
 		/// <param name="label">The label text.</param>
 		public TextField(String label) : this()
 		{
-			Label = label;
+            Label(label);
 		}
 
 		/// <summary>
@@ -59,7 +56,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUI()
 		{
-			Text = GUI.TextField(Position, Text, MaxLength, Style);
+            Text(GUI.TextField(Position(), Text(), MaxLength, Style()));
 		}
 
 		/// <summary>
@@ -67,7 +64,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUILayout()
 		{
-            Text = GUILayout.TextField(Text, MaxLength, Style, LayoutOptions);
+            Text(GUILayout.TextField(Text(), MaxLength, Style(), LayoutOptions()));
 		}
 	}
 }

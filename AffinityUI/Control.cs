@@ -81,14 +81,18 @@ namespace AffinityUI
             }
 			LayoutSetSkin();
 
-			if (TargetType == GUIType)
-			{
-				Layout_GUI();
-			}
-			else if (TargetType == GUILayoutType)
-			{
-				Layout_GUILayout();
-			}
+            if (TargetType == GUIType)
+            {
+                Layout_GUI();
+            }
+            else if (TargetType == GUILayoutType)
+            {
+                Layout_GUILayout();
+            }
+            else
+            {
+                throw new InvalidOperationException("TargetType must be either GUI or GUILayout");
+            }
 		}
 
 		/// <summary>

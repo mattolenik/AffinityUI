@@ -10,23 +10,28 @@ namespace AffinityUI
     {
         public IList<BindableContent> Buttons { get; private set; }
 
-        public BindableProperty<SelectionGrid, int> SelectedProperty { get; private set; }
+        BindableProperty<SelectionGrid, int> _selected;
 
-        public int Selected
+        public BindableProperty<SelectionGrid, int> Selected()
         {
-            get { return SelectedProperty.Value; }
-            set { SelectedProperty.Value = value; }
+            return _selected;
+        }
+
+        public SelectionGrid Selected(int index)
+        {
+            _selected.Value = index;
+            return this;
         }
 
         public SelectionGrid()
         {
             Buttons = new List<BindableContent>();
-            SelectedProperty = new BindableProperty<SelectionGrid, int>(this);
+            _selected = new BindableProperty<SelectionGrid, int>(this);
         }
 
         public SelectionGrid AddButton(String label)
         {
-            Buttons.Add(new BindableContent { Label = label });
+            Buttons.Add(new BindableContent().Label(label));
             return this;
         }
 

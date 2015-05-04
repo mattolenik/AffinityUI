@@ -36,7 +36,7 @@ namespace AffinityUI
 			: base()
 		{
 			Self = this;
-			Style = GUI.skin.button;
+            Style(GUI.skin.button);
 		}
 
 		/// <summary>
@@ -46,10 +46,10 @@ namespace AffinityUI
 		public Button(String label)
 			: this()
 		{
-			SetLabel(label);
+            Label(label);
 		}
 
-		private void Do_OnClicked(bool value)
+		void Do_OnClicked(bool value)
 		{
 			if (value)
 			{
@@ -62,7 +62,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUILayout()
 		{
-			Do_OnClicked(GUILayout.Button(Content, Style, LayoutOptions));
+            Do_OnClicked(GUILayout.Button(Content(), Style(), LayoutOptions()));
 		}
 
 		/// <summary>
@@ -70,7 +70,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUI()
 		{
-			Do_OnClicked(GUI.Button(Position, Content, Style));
+            Do_OnClicked(GUI.Button(Position(), Content(), Style()));
 		}
 	}
 }
