@@ -15,8 +15,6 @@ namespace AffinityUI
 	{
 		GUIContent _content = new GUIContent();
 
-		GUIStyle _style = GUIStyle.none;
-
         BindableProperty<ContentControl<TSelf>, String> _label;
 
         BindableProperty<ContentControl<TSelf>, String> _tooltip;
@@ -74,17 +72,6 @@ namespace AffinityUI
         public TSelf Image(Texture image)
         {
             _content.image = image;
-            return Self;
-        }
-
-        public GUIStyle Style()
-        {
-            return _style;
-        }
-
-        public TSelf Style(GUIStyle style)
-        {
-            _style = style;
             return Self;
         }
 

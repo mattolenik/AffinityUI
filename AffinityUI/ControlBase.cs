@@ -16,6 +16,8 @@ namespace AffinityUI
 
         GUILayoutOption[] _layoutOptions;
 
+        GUIStyle _style = GUIStyle.none;
+
 		/// <summary>
 		/// Gets or sets the object to return in fluent methods. Should be set to
 		/// <c>this</c> by implementing subclass.
@@ -73,5 +75,16 @@ namespace AffinityUI
 			Visible.Value = visible;
 			return Self;
 		}
+
+        public GUIStyle Style()
+        {
+            return _style;
+        }
+
+        public TSelf Style(GUIStyle style)
+        {
+            _style = style;
+            return Self;
+        }
 	}
 }

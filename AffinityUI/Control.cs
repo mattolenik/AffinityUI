@@ -109,12 +109,18 @@ namespace AffinityUI
 		/// <summary>
 		/// Called when layout is done using GUI.
 		/// </summary>
-		protected virtual void Layout_GUI() { }
+		protected virtual void Layout_GUI()
+        {
+            throw new NotSupportedException("Layout_GUI not implemented in " + GetType().Name);
+        }
 
 		/// <summary>
 		/// Called when layout is done using GUILayout.
 		/// </summary>
-		protected virtual void Layout_GUILayout() { }
+		protected virtual void Layout_GUILayout()
+        {
+            throw new NotSupportedException("Layout_GUILayout not implemented in " + GetType().Name);
+        }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Control"/> class.

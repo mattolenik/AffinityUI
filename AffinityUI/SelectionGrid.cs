@@ -12,6 +12,12 @@ namespace AffinityUI
 
         BindableProperty<SelectionGrid, int> _selected;
 
+        BindableProperty<SelectionGrid, int> _xCount;
+
+        bool autoXCount = true;
+
+        GUIContent[] buttonContents;
+
         public BindableProperty<SelectionGrid, int> Selected()
         {
             return _selected;
@@ -23,22 +29,42 @@ namespace AffinityUI
             return this;
         }
 
-        public SelectionGrid()
+        public SelectionGrid() : base()
         {
             Buttons = new List<BindableContent>();
             _selected = new BindableProperty<SelectionGrid, int>(this);
+            _xCount = new BindableProperty<SelectionGrid, int>(this);
+            _xCount.OnPropertyChanged((source, old, nw) => autoXCount = false);
+            Style(GUI.skin.button);
+            Self = this;
+        }
+
+        public BindableProperty<SelectionGrid, int> XCount()
+        {
+            return _xCount;
+        }
+
+        public SelectionGrid XCount(int xCount)
+        {
+            _xCount.Value = xCount;
+            return this;
         }
 
         public SelectionGrid AddButton(String label)
         {
-            Buttons.Add(new BindableContent().Label(label));
-            return this;
+            return AddButton(new BindableContent().Label(label));
         }
 
         public SelectionGrid AddButton(BindableContent content)
         {
             Buttons.Add(content);
+            buttonContents = Buttons.Select(x => x.Content).ToArray();
             return this;
+        }
+
+        protected override void Layout_GUILayout()
+        {
+            Selected(GUILayout.SelectionGrid(Selected(), buttonContents, autoXCount ? Buttons.Count : _xCount, Style(), LayoutOptions()));
         }
     }
 }

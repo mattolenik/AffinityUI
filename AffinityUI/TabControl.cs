@@ -9,23 +9,21 @@ namespace AffinityUI
     /// <summary>
     /// A control that displays its children as tabs.
     /// </summary>
-    public class TabControl : Composite
+    public class TabControl : ControlBase<TabControl>
     {
-        class DefaultComposite : Composite { }
-
         SelectionGrid tabButtons = new SelectionGrid();
 
-        Composite pages = new DefaultComposite();
-
         Dictionary<int, Control> pageMap = new Dictionary<int, Control>();
+
+        int currentPage = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TabControl"/> class.
         /// </summary>
-        public TabControl()
+        public TabControl() : base()
         {
-            Add(tabButtons);
-            Add(pages);
+            Self = this;
+            tabButtons.Selected().OnPropertyChanged((source, old, nw) => ShowTab(nw));
         }
 
         /// <summary>
@@ -37,16 +35,7 @@ namespace AffinityUI
         public TabControl AddPage(String name, Control page)
         {
             tabButtons.AddButton(new BindableContent().Label(name));
-            tabButtons.Selected().OnPropertyChanged((source, old, nw) => ShowTab(nw));
             pageMap.Add(pageMap.Count, page);
-            pages.Add(page);
-            page.Visible.Value = false;
-
-            // Show the first page
-            if (pages.Children.Count == 1)
-            {
-                ShowTab(0);
-            }
             return this;
         }
 
@@ -57,13 +46,34 @@ namespace AffinityUI
         /// <returns>this control</returns>
         public TabControl ShowTab(int index)
         {
-            foreach (var page in pages)
-            {
-                page.Visible.Value = false;
-            }
-            pageMap[index].Visible.Value = true;
+            currentPage = index;
             tabButtons.Selected().SetIgnoreBinding(index);
             return this;
+        }
+
+        protected override void Layout_GUILayout()
+        {
+            GUILayout.BeginVertical(LayoutOptions());
+            tabButtons.Layout();
+            pageMap[currentPage].Layout();
+            GUILayout.EndVertical();
+        }
+
+        internal protected override Type TargetType
+        {
+            get
+            {
+                return base.TargetType;
+            }
+            set
+            {
+                base.TargetType = value;
+                foreach (var page in pageMap.Values)
+                {
+                    page.TargetType = value;
+                }
+                tabButtons.TargetType = value;
+            }
         }
     }
 }
