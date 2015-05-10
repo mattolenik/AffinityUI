@@ -13,9 +13,9 @@ namespace AffinityUI
 	{
         int _maxLength;
 
-        BindableProperty<TextArea, String> _text;
+        BindableProperty<TextArea, string> _text;
 
-        public BindableProperty<TextArea, String> Text()
+        public BindableProperty<TextArea, string> Text()
         {
             return _text;
         }
@@ -43,8 +43,8 @@ namespace AffinityUI
 		public TextArea()
 			: base()
 		{
-            Style(GUI.skin.textArea);
-            _text = new BindableProperty<TextArea, String>(this, String.Empty);
+            Style(() => GUI.skin.textArea);
+            _text = new BindableProperty<TextArea, string>(this, string.Empty);
             _maxLength = int.MaxValue;
 		}
 
@@ -52,7 +52,7 @@ namespace AffinityUI
 		/// Initializes a new instance of the <see cref="TextArea"/> class.
 		/// </summary>
 		/// <param name="label">The label text.</param>
-		public TextArea(String label)
+		public TextArea(string label)
 			: this()
 		{
             Label(label);

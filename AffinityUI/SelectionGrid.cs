@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace AffinityUI
 {
-    public class SelectionGrid : ControlBase<SelectionGrid>
+    public class SelectionGrid : TypedControl<SelectionGrid>
     {
         public IList<BindableContent> Buttons { get; private set; }
 
@@ -35,7 +35,7 @@ namespace AffinityUI
             _selected = new BindableProperty<SelectionGrid, int>(this);
             _xCount = new BindableProperty<SelectionGrid, int>(this);
             _xCount.OnPropertyChanged((source, old, nw) => autoXCount = false);
-            Style(GUI.skin.button);
+            Style(() => GUI.skin.button);
         }
 
         public BindableProperty<SelectionGrid, int> XCount()
@@ -49,7 +49,7 @@ namespace AffinityUI
             return this;
         }
 
-        public SelectionGrid AddButton(String label)
+        public SelectionGrid AddButton(string label)
         {
             return AddButton(new BindableContent().Label(label));
         }

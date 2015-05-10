@@ -11,13 +11,13 @@ namespace AffinityUI
 	/// Generic base class for controls that have content.
 	/// </summary>
 	/// <typeparam name="TSelf">The type of the implementing subclass.</typeparam>
-	public abstract class ContentControl<TSelf> : ControlBase<TSelf> where TSelf : Control
+	public abstract class ContentControl<TSelf> : TypedControl<TSelf> where TSelf : Control
 	{
 		GUIContent _content = new GUIContent();
 
-        BindableProperty<ContentControl<TSelf>, String> _label;
+        BindableProperty<ContentControl<TSelf>, string> _label;
 
-        BindableProperty<ContentControl<TSelf>, String> _tooltip;
+        BindableProperty<ContentControl<TSelf>, string> _tooltip;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ContentControl&lt;TSelf&gt;"/> class.
@@ -25,8 +25,8 @@ namespace AffinityUI
 		protected ContentControl()
 			: base()
 		{
-            _label = new BindableProperty<ContentControl<TSelf>, String>(this);
-            _tooltip = new BindableProperty<ContentControl<TSelf>, String>(this);
+            _label = new BindableProperty<ContentControl<TSelf>, string>(this);
+            _tooltip = new BindableProperty<ContentControl<TSelf>, string>(this);
             _label.OnPropertyChanged((source, old, nw) => _content.text = nw);
             _tooltip.OnPropertyChanged((source, old, nw) =>
             {
@@ -50,23 +50,23 @@ namespace AffinityUI
             return this as TSelf;
         }
 
-        public BindableProperty<ContentControl<TSelf>, String> Label()
+        public BindableProperty<ContentControl<TSelf>, string> Label()
         {
             return _label;
         }
 
-        public TSelf Label(String text)
+        public TSelf Label(string text)
         {
             _label.Value = text;
             return this as TSelf;
         }
             
-        public BindableProperty<ContentControl<TSelf>, String> Tooltip()
+        public BindableProperty<ContentControl<TSelf>, string> Tooltip()
         {
             return _tooltip;
         }
 
-        public TSelf Tooltip(String text)
+        public TSelf Tooltip(string text)
         {
             _tooltip.Value = text;
             return this as TSelf;

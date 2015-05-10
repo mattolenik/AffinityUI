@@ -16,7 +16,7 @@ namespace AffinityUI
 		public Toggle()
 			: base()
 		{
-            Style(GUI.skin.toggle);
+            Style(() => GUI.skin.toggle);
             _isChecked = new BindableProperty<Toggle, bool>(this);
 		}
 
@@ -24,7 +24,7 @@ namespace AffinityUI
 		/// Initializes a new instance of the <see cref="Toggle"/> class.
 		/// </summary>
 		/// <param name="label">The label text.</param>
-		public Toggle(String label)
+		public Toggle(string label)
 			: this()
 		{
             Label(label);

@@ -11,25 +11,25 @@ namespace AffinityUI
     /// </summary>
     public class BindableContent
     {
-        BindableProperty<BindableContent, String> _label;
+        BindableProperty<BindableContent, string> _label;
 
-        BindableProperty<BindableContent, String> _tooltip;
+        BindableProperty<BindableContent, string> _tooltip;
 
         public GUIContent Content { get; set; }
 
-        public BindableProperty<BindableContent, String> Label()
+        public BindableProperty<BindableContent, string> Label()
         {
             return _label;
         }
 
-        public BindableContent Label(String text)
+        public BindableContent Label(string text)
         {
             _label.Value = text;
             Content.text = text;
             return this;
         }
 
-        public BindableProperty<BindableContent, String>Tooltip()
+        public BindableProperty<BindableContent, string>Tooltip()
         {
             return _tooltip;
         }
@@ -56,8 +56,8 @@ namespace AffinityUI
         {
             Content = new GUIContent();
 
-            _label = new BindableProperty<BindableContent, String>(this);
-            _tooltip = new BindableProperty<BindableContent, String>(this);
+            _label = new BindableProperty<BindableContent, string>(this);
+            _tooltip = new BindableProperty<BindableContent, string>(this);
         }
     }
 }

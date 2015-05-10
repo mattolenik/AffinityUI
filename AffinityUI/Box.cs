@@ -17,14 +17,14 @@ namespace AffinityUI
 		public Box()
 			: base()
 		{
-            Style(GUI.skin.box);
+            Style(() => GUI.skin.box);
 		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Box"/> class.
 		/// </summary>
 		/// <param name="label">The label text.</param>
-		public Box(String label)
+		public Box(string label)
 			: this()
 		{
             Label(label);

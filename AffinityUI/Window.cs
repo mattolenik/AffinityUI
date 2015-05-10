@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AffinityUI
 {
-    public class Window : ControlBase<Window>
+    public class Window : TypedControl<Window>
     {
         readonly System.Random _rand = new System.Random();
         readonly int _id;
@@ -12,14 +12,14 @@ namespace AffinityUI
         Rect _dragArea;
         bool _autoDrag;
 
-        BindableProperty<Window, String> _text;
+        BindableProperty<Window, string> _text;
 
         public int ID { get { return _id; }}
 
         protected Window() : base()
         {
             _id = _rand.Next();
-            Style(GUI.skin.window);
+            Style(() => GUI.skin.window);
             _text = new BindableProperty<Window, string>(this);
         }
 
@@ -32,15 +32,16 @@ namespace AffinityUI
         {
             _content = content;
             _content.Context = Context;
+            _content.SkinValue = SkinValue;
             return this;
         }
 
-        public BindableProperty<Window, String> Title()
+        public BindableProperty<Window, string> Title()
         {
             return _text;
         }
 
-        public Window Title(String text)
+        public Window Title(string text)
         {
             _text.Value = text;
             return this;
@@ -68,6 +69,22 @@ namespace AffinityUI
         {
             _dragArea = new Rect(0, 0, _windowRect.width, Style().border.top);
             return this;
+        }
+
+        protected internal override GUISkin SkinValue
+        {
+            get
+            {
+                return base.SkinValue;
+            }
+            set
+            {
+                base.SkinValue = value;
+                if (_content != null)
+                {
+                    _content.SkinValue = value;
+                }
+            }
         }
 
         protected override void Layout_GUI()

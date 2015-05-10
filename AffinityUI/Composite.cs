@@ -23,14 +23,6 @@ namespace AffinityUI
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Composite"/> class.
-		/// </summary>
-		public Composite()
-			: base()
-		{
-		}
-
-		/// <summary>
 		/// Called when layout begins. Automatically calls <see cref="OnBeginLayout_GUILayout"/>
 		/// or <see cref="OnBeginLayout_GUI"/>.
 		/// </summary>
@@ -121,12 +113,16 @@ namespace AffinityUI
 		/// <typeparam name="TControl">The type of the control.</typeparam>
 		/// <param name="control">The control.</param>
 		/// <returns>The current composite instance.</returns>
-        public Composite<TSelf> Add<TControl>(TControl control) where TControl : Control
+        public TSelf Add<TControl>(TControl control) where TControl : Control
 		{
 			Children.Add(control);
 			control.Context = Context;
 			control.Parent = this;
-			return this;
+            if (!control.IndependantSkin)
+            {
+                control.SkinValue = SkinValue;
+            }
+            return this as TSelf;
 		}
 
 		/// <summary>
@@ -134,11 +130,11 @@ namespace AffinityUI
 		/// </summary>
 		/// <param name="control">The control.</param>
 		/// <returns>The current composite instance.</returns>
-        public Composite<TSelf> Remove(Control control)
+        public TSelf Remove(Control control)
 		{
 			Children.Remove(control);
 			control.Parent = null;
-			return this;
+            return this as TSelf;
 		}
 
 		public override void Layout()
@@ -147,6 +143,7 @@ namespace AffinityUI
             {
                 return;
             }
+            GUI.skin = SkinValue;
 
 			OnBeginLayout();
 
@@ -157,6 +154,31 @@ namespace AffinityUI
 
 			OnEndLayout();
 		}
+
+        public TSelf Skin(GUISkin skin)
+        {
+            SkinValue = skin;
+            return this as TSelf;
+        }
+
+        protected internal override GUISkin SkinValue
+        {
+            get
+            {
+                return base.SkinValue;
+            }
+            set
+            {
+                base.SkinValue = value;
+                foreach (var control in Children)
+                {
+                    if (!control.IndependantSkin)
+                    {
+                        control.SkinValue = value;
+                    }
+                }
+            }
+        }
 
         #region IEnumerable<Control> Members
 

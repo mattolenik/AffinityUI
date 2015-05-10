@@ -9,7 +9,7 @@ namespace AffinityUI
     /// <summary>
     /// A control that displays its children as tabs.
     /// </summary>
-    public class TabControl : ControlBase<TabControl>
+    public class TabControl : TypedControl<TabControl>
     {
         SelectionGrid tabButtons = new SelectionGrid();
 
@@ -31,10 +31,16 @@ namespace AffinityUI
         /// <param name="name">The name of the page.</param>
         /// <param name="page">The page contents.</param>
         /// <returns>this instance</returns>
-        public TabControl AddPage(String name, Control page)
+        public TabControl AddPage(string name, Control page)
         {
             tabButtons.AddButton(new BindableContent().Label(name));
             pageMap.Add(pageMap.Count, page);
+            page.Parent = this;
+            if (!page.IndependantSkin)
+            {
+                page.SkinValue = SkinValue;
+            }
+            page.Context = Context;
             return this;
         }
 
@@ -48,6 +54,29 @@ namespace AffinityUI
             currentPage = index;
             tabButtons.Selected().SetIgnoreBinding(index);
             return this;
+        }
+
+        protected internal override GUISkin SkinValue
+        {
+            get
+            {
+                return base.SkinValue;
+            }
+            set
+            {
+                base.SkinValue = value;
+                foreach(var page in pageMap.Values)
+                {
+                    if (!page.IndependantSkin)
+                    {
+                        page.SkinValue = value;
+                    }
+                }
+                if (!tabButtons.IndependantSkin)
+                {
+                    tabButtons.SkinValue = value;
+                }
+            }
         }
 
         protected override void Layout_GUILayout()

@@ -46,12 +46,10 @@
     <Compile Include="BindableProperty.cs" />
     <Compile Include="Box.cs" />
     <Compile Include="ContentControl.cs" />
-    <Compile Include="Control.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Composite.cs" />
     <Compile Include="Label.cs" />
     <Compile Include="PasswordField.cs" />
-    <Compile Include="ControlBase.cs" />
     <Compile Include="SelectionGrid.cs" />
     <Compile Include="TabControl.cs" />
     <Compile Include="TextArea.cs" />
@@ -64,6 +62,8 @@
     <Compile Include="Window.cs" />
     <Compile Include="TooltipRenderer.cs" />
     <Compile Include="UI.cs" />
+    <Compile Include="TypedControl.cs" />
+    <Compile Include="Control.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

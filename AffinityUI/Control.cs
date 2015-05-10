@@ -6,21 +6,18 @@ using UnityEngine;
 
 namespace AffinityUI
 {
-	/// <summary>
-	/// A non-composite UI control.
-	/// </summary>
+    /// <summary>
+    /// The absolute base class for all controls, provides little functionality
+    /// and mostly serves as a handle for referencing all other controls.
+    /// </summary>
 	public abstract class Control
 	{
-		/// <summary>
-		/// Gets or sets the type of the layout target.
-		/// </summary>
-		/// <value>The type of the layout target.</value>
 		protected internal virtual UIContext Context { get; set; }
 
-		/// <summary>
-		/// Gets or sets (protected internal) the parent control.
-		/// </summary>
-		/// <value>The parent control.</value>
+        /// <summary>
+        /// Gets or sets (protected internal) the owning parent of this control.
+        /// </summary>
+        /// <value>The parent control.</value>
 		public Control Parent { get; protected internal set; }
 
 		/// <summary>
@@ -34,6 +31,8 @@ namespace AffinityUI
 		/// </remarks>
 		public virtual void Layout()
 		{
+            GUI.skin = SkinValue;
+
             switch (Context.Layout)
             {
                 case LayoutTarget.GUI:
@@ -63,17 +62,35 @@ namespace AffinityUI
             throw new NotSupportedException("Layout_GUILayout not implemented in " + GetType().Name);
         }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Control"/> class.
-		/// </summary>
-		protected Control()
-		{
-		}
-
+        /// <summary>
+        /// Globally registers this control with the specified ID.
+        /// </summary>
+        /// <param name="id">an ID used to refer to this control.</param>
         public Control ID(string id)
         {
             UI.RegisterID(this, id);
             return this;
         }
+
+        public string ID()
+        {
+            return UI.IdOf(this);
+        }
+
+        /// <summary>
+        /// Gets or sets the skin to use when rendering.
+        /// </summary>
+        /// <value>The skin value.</value>
+        protected internal virtual GUISkin SkinValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="AffinityUI.Control"/> has 
+        /// a skin independant of its parent. Setting the skin of a control that owns this one
+        /// will have no effect if this value is true. For example, if this skin is inside a
+        /// Window or a panel, setting the skin on the Window or panel will have no effect on
+        /// this control when IndependantSkin is set to true.
+        /// </summary>
+        /// <value><c>true</c> if the control has an independant skin; otherwise, <c>false</c>.</value>
+        protected internal virtual bool IndependantSkin { get; set; }
 	}
 }

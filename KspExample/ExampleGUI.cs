@@ -28,15 +28,16 @@ namespace KspExample
 
         void OnGUI()
         {
-            GUI.skin = HighLogic.Skin;
             GUI.depth = 100;
 
             if (gui == null)
             {
                 gui = UI.GUILayout(this,
                     new Window(new Rect(100, 100, 500, 500))
+                    .ID("window")
                     .Title("Window Title")
                     .DragTitlebar()
+                    .Skin(HighLogic.Skin)
                     .Content(
                         new TabControl()
                         .AddPage(
@@ -61,6 +62,8 @@ namespace KspExample
                                 .IsChecked().BindTwoWay(() => Option1, v => Option1 = v)
                                  // Print to the console each time the value changes
                                 .OnToggled((source, old, nw) => print(source.Label() + " is now " + nw)))
+                            .Add(new Button("Unity skin").OnClicked(s => UI.ByID<Window>("window").Skin(null)).Skin(null, true))
+                            .Add(new Button("KSP skin").OnClicked(s => UI.ByID<Window>("window").Skin(HighLogic.Skin)))
                         )
                         .AddPage(
                             "Page 2",

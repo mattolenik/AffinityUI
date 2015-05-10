@@ -17,14 +17,14 @@ namespace AffinityUI
 		public Label()
 			: base()
 		{
-            Style(GUI.skin.label);
+            Style(() => GUI.skin.label);
 		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Label"/>.
 		/// </summary>
 		/// <param name="text">The label text.</param>
-		public Label(String text)
+		public Label(string text)
 			: this()
 		{
             Content(new GUIContent(text));

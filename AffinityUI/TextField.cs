@@ -17,9 +17,9 @@ namespace AffinityUI
 		/// <value>The maximum text length.</value>
 		public int MaxLength { get; set; }
 
-        BindableProperty<TextField, String> _text;
+        BindableProperty<TextField, string> _text;
 
-        public BindableProperty<TextField, String> Text()
+        public BindableProperty<TextField, string> Text()
         {
             return _text;
         }
@@ -36,8 +36,8 @@ namespace AffinityUI
 		public TextField()
 			: base()
 		{
-            Style(GUI.skin.textField);
-			_text = new BindableProperty<TextField, String>(this);
+            Style(() => GUI.skin.textField);
+			_text = new BindableProperty<TextField, string>(this);
 			MaxLength = Int32.MaxValue;
 		}
 
@@ -45,7 +45,7 @@ namespace AffinityUI
 		/// Initializes a new instance of the <see cref="TextField"/> class.
 		/// </summary>
 		/// <param name="label">The label text.</param>
-		public TextField(String label) : this()
+		public TextField(string label) : this()
 		{
             Label(label);
 		}

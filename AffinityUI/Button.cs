@@ -35,14 +35,14 @@ namespace AffinityUI
 		public Button()
 			: base()
 		{
-            Style(GUI.skin.button);
+            Style(() => GUI.skin.button);
 		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Button"/> class.
 		/// </summary>
 		/// <param name="label">The label text.</param>
-		public Button(String label)
+		public Button(string label)
 			: this()
 		{
             Label(label);

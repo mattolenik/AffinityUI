@@ -191,7 +191,7 @@ namespace AffinityUI
 		/// <param name="a">First object.</param>
 		/// <param name="b">Second object.</param>
 		/// <returns><c>true</c> if the arguments are different; otherwise, <c>false</c>.</returns>
-		private bool AreDifferent(Object a, Object b)
+		private bool AreDifferent(object a, object b)
 		{
 			if (a == null && b == null)
 			{

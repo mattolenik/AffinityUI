@@ -8,7 +8,7 @@ namespace AffinityUI
 	/// </summary>
 	public class PasswordField : ContentControl<PasswordField>
 	{
-        BindableProperty<PasswordField, String> _password;
+        BindableProperty<PasswordField, string> _password;
 
 		/// <summary>
 		/// Gets or sets the mask character, used only by GUI and GUILayout contexts.
@@ -22,12 +22,12 @@ namespace AffinityUI
 		/// <value>The length of the max.</value>
 		public int MaxLength { get; set; }
 
-        public BindableProperty<PasswordField, String> Password()
+        public BindableProperty<PasswordField, string> Password()
         {
             return _password;
         }
 
-        public PasswordField Password(String text)
+        public PasswordField Password(string text)
         {
             _password.Value = text;
             return this;
@@ -41,15 +41,15 @@ namespace AffinityUI
 		{
 			Mask = '*';
 			MaxLength = Int32.MaxValue;
-            Style(GUI.skin.textField);
-            _password = new BindableProperty<PasswordField, String>(this, String.Empty);
+            Style(() => GUI.skin.textField);
+            _password = new BindableProperty<PasswordField, string>(this, string.Empty);
 		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PasswordField"/> class.
 		/// </summary>
 		/// <param name="label">The label text.</param>
-		public PasswordField(String label)
+		public PasswordField(string label)
 			: this()
 		{
             Label(label);
@@ -60,7 +60,7 @@ namespace AffinityUI
 		/// </summary>
 		/// <param name="handler">The handler.</param>
 		/// <returns>this instance</returns>
-		public PasswordField OnPasswordChanged(PropertyChangedEventHandler<PasswordField, String> handler)
+		public PasswordField OnPasswordChanged(PropertyChangedEventHandler<PasswordField, string> handler)
 		{
 			_password.PropertyChanged += handler;
 			return this;
