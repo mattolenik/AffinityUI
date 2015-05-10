@@ -39,7 +39,6 @@ namespace AffinityUI
 		public PasswordField()
 			: base()
 		{
-			Self = this;
 			Mask = '*';
 			MaxLength = Int32.MaxValue;
             Style(GUI.skin.textField);

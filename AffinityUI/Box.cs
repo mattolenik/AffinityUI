@@ -17,7 +17,6 @@ namespace AffinityUI
 		public Box()
 			: base()
 		{
-			Self = this;
             Style(GUI.skin.box);
 		}
 

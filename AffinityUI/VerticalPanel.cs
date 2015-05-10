@@ -9,14 +9,14 @@ namespace AffinityUI
 	/// <summary>
 	/// A layout panel whose children are stacked vertically.
 	/// </summary>
-	public class VerticalPanel : Composite
+    public class VerticalPanel : Composite<VerticalPanel>
 	{
 		/// <summary>
 		/// Called when layout begins when using GUILayout.
 		/// </summary>
 		protected override void OnBeginLayout_GUILayout()
 		{
-			GUILayout.BeginVertical();
+            GUILayout.BeginVertical();
 		}
 
 		/// <summary>

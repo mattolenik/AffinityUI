@@ -19,24 +19,18 @@ namespace AffinityUI
         GUIStyle _style = GUIStyle.none;
 
 		/// <summary>
-		/// Gets or sets the object to return in fluent methods. Should be set to
-		/// <c>this</c> by implementing subclass.
-		/// </summary>
-		/// <value>a reference to the current control</value>
-		protected TSelf Self { get; set; }
-
-		/// <summary>
 		/// Initializes a new instance of the <see cref="ControlBase&lt;TSelf&gt;"/> class.
 		/// </summary>
 		protected ControlBase()
 			: base()
 		{
+            _visible = new BindableProperty<TSelf, bool>(this as TSelf, true);
 		}
 
-        public TSelf ID(string id)
+        public new TSelf ID(string id)
         {
-            Control.AddID(this, id);
-            return Self;
+            UI.RegisterID(this, id);
+            return this as TSelf;
         }
 
 		/// <summary>
@@ -47,7 +41,7 @@ namespace AffinityUI
 		public TSelf Position(Rect position)
 		{
             _position = position;
-			return Self;
+            return this as TSelf;
 		}
 
         public Rect Position()
@@ -63,7 +57,7 @@ namespace AffinityUI
 		public TSelf LayoutOptions(params GUILayoutOption[] options)
 		{
             LayoutOptions(options);
-			return Self;
+			return this as TSelf;
 		}
 
         public GUILayoutOption[] LayoutOptions()
@@ -71,16 +65,18 @@ namespace AffinityUI
             return _layoutOptions;
         }
 
-		/// <summary>
-		/// Sets the <see cref="Control.Visible"/> property.
-		/// </summary>
-		/// <param name="visible">if set to <c>true</c> [visible].</param>
-		/// <returns>this instance</returns>
-		public TSelf SetVisible(bool visible)
+        BindableProperty<TSelf, bool> _visible;
+
+		public TSelf Visible(bool visible)
 		{
-			Visible.Value = visible;
-			return Self;
+            _visible.Value = visible;
+			return this as TSelf;
 		}
+
+        public BindableProperty<TSelf, bool> Visible()
+        {
+            return _visible;
+        }
 
         public GUIStyle Style()
         {
@@ -90,7 +86,7 @@ namespace AffinityUI
         public TSelf Style(GUIStyle style)
         {
             _style = style;
-            return Self;
+            return this as TSelf;
         }
 	}
 }

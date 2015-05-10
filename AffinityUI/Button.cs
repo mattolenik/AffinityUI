@@ -35,7 +35,6 @@ namespace AffinityUI
 		public Button()
 			: base()
 		{
-			Self = this;
             Style(GUI.skin.button);
 		}
 

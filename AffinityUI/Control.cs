@@ -12,74 +12,16 @@ namespace AffinityUI
 	public abstract class Control
 	{
 		/// <summary>
-		/// Type of <see cref="GUI"/>.
-		/// </summary>
-		protected static readonly Type GUIType = typeof(GUI);
-
-		/// <summary>
-		/// Type of <see cref="GUILayout"/>.
-		/// </summary>
-		protected static readonly Type GUILayoutType = typeof(GUILayout);
-
-		/// <summary>
 		/// Gets or sets the type of the layout target.
 		/// </summary>
 		/// <value>The type of the layout target.</value>
-		protected internal virtual Type TargetType { get; set; }
-
-		/// <summary>
-		/// Backing field for <see cref="Skin"/> property.
-		/// </summary>
-		protected GUISkin _skin;
-
-        static readonly Dictionary<String, Control> controlsWithID = new Dictionary<string, Control>(StringComparer.OrdinalIgnoreCase);
-
-        protected static void AddID(Control control, String id)
-        {
-            controlsWithID[id] = control;
-        }
-
-        public static TControl Find<TControl>(String id) where TControl : Control
-        {
-            Control value;
-            if (controlsWithID.TryGetValue(id, out value))
-            {
-                return value as TControl;
-            }
-            throw new KeyNotFoundException("Could not find control with ID " + id);
-        }
+		protected internal virtual UIContext Context { get; set; }
 
 		/// <summary>
 		/// Gets or sets (protected internal) the parent control.
 		/// </summary>
 		/// <value>The parent control.</value>
 		public Control Parent { get; protected internal set; }
-
-		/// <summary>
-		/// Gets or sets the Unity <see cref="GUISkin"/>.
-		/// </summary>
-		/// <remarks>
-		/// Skins are applied recursively to all child controls.
-		/// To exclude a control, set its skin to null or to another skin.
-		/// </remarks>
-		/// <value>The skin.</value>
-		public virtual GUISkin Skin
-		{
-			get { return _skin; }
-			set { _skin = value; }
-		}
-
-		/// <summary>
-		/// Sets the Unity <see cref="GUISkin"/>.
-		/// </summary>
-		/// <param name="skin">The skin.</param>
-		public TControl SetSkin<TControl>(GUISkin skin) where TControl : Control
-		{
-			Skin = skin;
-			return this as TControl;
-		}
-
-        public BindableProperty<Control, bool> Visible { get; private set; }
 
 		/// <summary>
 		/// Performs the necessary calls to UnityGUI to perform layout or updates.
@@ -92,35 +34,17 @@ namespace AffinityUI
 		/// </remarks>
 		public virtual void Layout()
 		{
-            if (!Visible)
+            switch (Context.Layout)
             {
-                return;
+                case LayoutTarget.GUI:
+                    Layout_GUI();
+                    break;
+                case LayoutTarget.GUILayout:
+                    Layout_GUILayout();
+                    break;
+                default:
+                    throw new InvalidOperationException("Layout must be either GUI or GUILayout");
             }
-			LayoutSetSkin();
-
-            if (TargetType == GUIType)
-            {
-                Layout_GUI();
-            }
-            else if (TargetType == GUILayoutType)
-            {
-                Layout_GUILayout();
-            }
-            else
-            {
-                throw new InvalidOperationException("TargetType must be either GUI or GUILayout");
-            }
-		}
-
-		/// <summary>
-		/// Sets the Unity GUI skin during layout.
-		/// </summary>
-		protected void LayoutSetSkin()
-		{
-			if (!System.Object.ReferenceEquals(GUI.skin, Skin))
-			{
-				GUI.skin = Skin;
-			}
 		}
 
 		/// <summary>
@@ -144,7 +68,12 @@ namespace AffinityUI
 		/// </summary>
 		protected Control()
 		{
-            Visible = new BindableProperty<Control, bool>(this, true);
 		}
+
+        public Control ID(string id)
+        {
+            UI.RegisterID(this, id);
+            return this;
+        }
 	}
 }

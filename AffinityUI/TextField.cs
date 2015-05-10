@@ -36,7 +36,6 @@ namespace AffinityUI
 		public TextField()
 			: base()
 		{
-			Self = this;
             Style(GUI.skin.textField);
 			_text = new BindableProperty<TextField, String>(this);
 			MaxLength = Int32.MaxValue;

@@ -11,11 +11,7 @@ namespace AffinityUI
 	/// </summary>
 	public class TextArea : ContentControl<TextArea>
 	{
-		/// <summary>
-		/// Gets or sets the maximum length of the text. Defaults to <see cref="Int32.MaxValue"/>.
-		/// </summary>
-		/// <value>The maximum text length.</value>
-		public int MaxLength { get; set; }
+        int _maxLength;
 
         BindableProperty<TextArea, String> _text;
 
@@ -29,6 +25,17 @@ namespace AffinityUI
             _text.Value = text;
             return this;
         }
+
+        public int MaxLength()
+        {
+            return _maxLength;
+        }
+
+        public TextArea MaxLength(int length)
+        {
+            _maxLength = length;
+            return this;
+        }
 		
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TextArea"/> class.
@@ -36,10 +43,9 @@ namespace AffinityUI
 		public TextArea()
 			: base()
 		{
-			Self = this;
             Style(GUI.skin.textArea);
-			_text = new BindableProperty<TextArea, String>(this);
-			MaxLength = 50;
+            _text = new BindableProperty<TextArea, String>(this, String.Empty);
+            _maxLength = int.MaxValue;
 		}
 
 		/// <summary>
@@ -57,7 +63,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUI()
 		{
-            Text(GUI.TextArea(Position(), Text(), MaxLength, Style()));
+            Text(GUI.TextArea(Position(), Text(), _maxLength, Style()));
 		}
 
 		/// <summary>
@@ -65,7 +71,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUILayout()
 		{
-            Text(GUILayout.TextArea(Text(), MaxLength, Style(), LayoutOptions()));
+            Text(GUILayout.TextArea(Text(), _maxLength, Style(), LayoutOptions()));
 		}
 	}
 }

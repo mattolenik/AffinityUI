@@ -9,7 +9,7 @@ namespace AffinityUI
 	/// <summary>
 	/// A composite control that's composed of zero or more child controls.
 	/// </summary>
-	public abstract class Composite : Control, IEnumerable<Control>
+    public abstract class Composite<TSelf> : ContentControl<TSelf>, IEnumerable<Control> where TSelf : Control
 	{
 		 IList<Control> children = new List<Control>();
 
@@ -23,45 +23,11 @@ namespace AffinityUI
 		}
 
 		/// <summary>
-		/// Gets or sets a value indicating whether or not child controls should have their skins set on next update.
-		/// </summary>
-		/// <value><c>true</c> if child skins should be updated; otherwise, <c>false</c>.</value>
-		protected bool SetChildSkins { get; set; }
-
-		/// <summary>
-		/// Gets or sets the Unity <see cref="GUISkin"/>.
-		/// </summary>
-		/// <value>The skin.</value>
-		/// <remarks>
-		/// Skins are applied recursively to all child controls.
-		/// To exclude a control, set its skin to null or to another skin.
-		/// </remarks>
-		public override GUISkin Skin
-		{
-			get
-			{
-				return base.Skin;
-			}
-			set
-			{
-				base.Skin = value;
-				SetChildSkins = true;
-			}
-		}
-
-		/// <summary>
-		/// Gets the <see cref="BindableProperty&lt;TOwner, TProperty&gt;"/> corresponding to the <see cref="Control.Visible"/> property.
-		/// </summary>
-		/// <value>The BindableProperty for the Visible property.</value>
-		public BindableProperty<Composite, bool> VisibleProperty { get; private set; }
-
-		/// <summary>
 		/// Initializes a new instance of the <see cref="Composite"/> class.
 		/// </summary>
 		public Composite()
 			: base()
 		{
-			VisibleProperty = new BindableProperty<Composite, bool>(this, true);
 		}
 
 		/// <summary>
@@ -74,14 +40,17 @@ namespace AffinityUI
 		/// </remarks>
 		protected virtual void OnBeginLayout()
 		{
-			if (TargetType == typeof(GUILayout))
-			{
-				OnBeginLayout_GUILayout();
-			}
-			else if (TargetType == typeof(GUI))
-			{
-				OnBeginLayout_GUI();
-			}
+            switch (Context.Layout)
+            {
+                case LayoutTarget.GUI:
+                    OnBeginLayout_GUI();
+                    break;
+                case LayoutTarget.GUILayout:
+                    OnBeginLayout_GUILayout();
+                    break;
+                default:
+                    throw new InvalidOperationException("Layout must be either GUI or GUILayout");
+            }
 		}
 
 		/// <summary>
@@ -94,13 +63,16 @@ namespace AffinityUI
 		/// </remarks>
 		protected virtual void OnEndLayout()
         {
-            if (TargetType == typeof(GUILayout))
+            switch (Context.Layout)
             {
-                OnEndLayout_GUILayout();
-            }
-            else if (TargetType == typeof(GUI))
-            {
-                OnEndLayout_GUI();
+                case LayoutTarget.GUI:
+                    OnEndLayout_GUI();
+                    break;
+                case LayoutTarget.GUILayout:
+                    OnEndLayout_GUILayout();
+                    break;
+                default:
+                    throw new InvalidOperationException("Layout must be either GUI or GUILayout");
             }
         }
 
@@ -127,18 +99,18 @@ namespace AffinityUI
 		/// Gets or sets the type of the target, either GUILayout or EditorGUILayout.
 		/// </summary>
 		/// <value>The type of the layout target.</value>
-		protected internal override Type TargetType
+		protected internal override UIContext Context
 		{
 			get
 			{
-				return base.TargetType;
+				return base.Context;
 			}
 			set
 			{
-				base.TargetType = value;
+				base.Context = value;
 				foreach (var control in Children)
 				{
-					control.TargetType = value;
+					control.Context = value;
 				}
 			}
 		}
@@ -149,10 +121,10 @@ namespace AffinityUI
 		/// <typeparam name="TControl">The type of the control.</typeparam>
 		/// <param name="control">The control.</param>
 		/// <returns>The current composite instance.</returns>
-		public Composite Add<TControl>(TControl control) where TControl : Control
+        public Composite<TSelf> Add<TControl>(TControl control) where TControl : Control
 		{
 			Children.Add(control);
-			control.TargetType = TargetType;
+			control.Context = Context;
 			control.Parent = this;
 			return this;
 		}
@@ -160,66 +132,21 @@ namespace AffinityUI
 		/// <summary>
 		/// Removes the specified control.
 		/// </summary>
-		/// <typeparam name="TControl">The type of the control.</typeparam>
 		/// <param name="control">The control.</param>
 		/// <returns>The current composite instance.</returns>
-		public Composite Remove<TControl>(TControl control) where TControl : Control
+        public Composite<TSelf> Remove(Control control)
 		{
 			Children.Remove(control);
 			control.Parent = null;
 			return this;
 		}
 
-		/// <summary>
-		/// Sets the <see cref="Control.Visible"/> property.
-		/// </summary>
-		/// <param name="visible">if set to <c>true</c> [visible].</param>
-		/// <returns></returns>
-		public Composite SetVisible(bool visible)
-		{
-            Visible.Value = visible;
-			return this;
-		}
-
-		/// <summary>
-		/// Recursively sets the skin on all child controls.
-		/// </summary>
-		/// <param name="skin">The skin.</param>
-		protected void RecursiveSetSkin(GUISkin skin)
-		{
-			_skin = skin;
-			foreach (var child in Children)
-			{
-				var composite = child as Composite;
-				if (composite != null)
-				{
-					composite.RecursiveSetSkin(skin);
-				}
-				else
-				{
-					child.Skin = skin;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Performs the necessary calls to UnityGUI to perform layout or updates.
-		/// Should be called in the OnGUI methods.
-		/// </summary>
 		public override void Layout()
 		{
-            if (!Visible)
+            if (!Visible())
             {
                 return;
             }
-
-			if (SetChildSkins)
-			{
-				RecursiveSetSkin(Skin);
-				SetChildSkins = false;
-			}
-
-			LayoutSetSkin();
 
 			OnBeginLayout();
 
@@ -229,26 +156,6 @@ namespace AffinityUI
 			}
 
 			OnEndLayout();
-		}
-
-		/// <summary>
-		/// Creates a default composite for the specified GUI target.
-		/// </summary>
-		/// <typeparam name="TGuiTarget">The type of the GUI target.</typeparam>
-		/// <typeparam name="TComposite">The type of the root composite.</typeparam>
-		/// <returns>
-		/// A composite of type TComposite to which other controls can be added.
-		/// </returns>
-		public static TComposite Create<TGuiTarget, TComposite>() where TComposite : Composite, new()
-		{
-			var result = new TComposite();
-			result.TargetType = typeof(TGuiTarget);
-			if (result.TargetType != typeof(GUILayout) &&
-				result.TargetType != typeof(GUI))
-			{
-				throw new ArgumentException("Generic argument must be type GUI or GUILayout ", "TGuiTarget");
-			}
-			return result;
 		}
 
         #region IEnumerable<Control> Members

@@ -22,7 +22,6 @@ namespace AffinityUI
         /// </summary>
         public TabControl() : base()
         {
-            Self = this;
             tabButtons.Selected().OnPropertyChanged((source, old, nw) => ShowTab(nw));
         }
 
@@ -59,20 +58,20 @@ namespace AffinityUI
             GUILayout.EndVertical();
         }
 
-        internal protected override Type TargetType
+        internal protected override UIContext Context
         {
             get
             {
-                return base.TargetType;
+                return base.Context;
             }
             set
             {
-                base.TargetType = value;
+                base.Context = value;
                 foreach (var page in pageMap.Values)
                 {
-                    page.TargetType = value;
+                    page.Context = value;
                 }
-                tabButtons.TargetType = value;
+                tabButtons.Context = value;
             }
         }
     }

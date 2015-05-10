@@ -25,11 +25,7 @@ namespace AffinityUI
 		/// </summary>
 		public event PropertyChangedEventHandler<TOwner, TProperty> PropertyChanged;
 
-		/// <summary>
-		/// Gets a value indicating whether this property is databound.
-		/// </summary>
-		/// <value><c>true</c> if this property is bound; otherwise, <c>false</c>.</value>
-		public bool IsBound
+		bool isBound
 		{
 			get { return _binder != null; }
 		}
@@ -161,6 +157,10 @@ namespace AffinityUI
 		/// </summary>
 		public void UpdateBinding()
 		{
+            if (!isBound)
+            {
+                return;
+            }
 			if (_binder != null &&
 					(_binder.Direction == BindingDirection.TwoWay || _binder.Direction == BindingDirection.OneWay))
 			{

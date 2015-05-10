@@ -3,6 +3,8 @@ using AffinityUI;
 using KSP;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System;
+using System.Reflection;
 
 namespace KspExample
 {
@@ -11,16 +13,14 @@ namespace KspExample
     {
         protected void Start()
         {
-            if (gameObject.GetComponent<ExampleGUI>() == null)
-            {
-                gameObject.AddComponent<ExampleGUI>();
-            }
+            gameObject.AddComponent<TooltipRenderer>();
+            gameObject.AddComponent<ExampleGUI>();
         }
     }
 
     public class ExampleGUI : MonoBehaviour
     {
-        Control gui;
+        UIContext gui;
 
         bool Option1 { get; set; }
 
@@ -29,34 +29,38 @@ namespace KspExample
         void OnGUI()
         {
             GUI.skin = HighLogic.Skin;
+            GUI.depth = 100;
 
             if (gui == null)
             {
-                gui = Window.Create<GUILayout>(new Rect(100, 100, 500, 500), "window test")
+                gui = UI.GUILayout(this,
+                    new Window(new Rect(100, 100, 500, 500))
+                    .Title("Window Title")
+                    .DragTitlebar()
                     .Content(
                         new TabControl()
                         .AddPage(
                             "Page 1",
                             new VerticalPanel()
-                            .Add(new Button("A Button")
+                            .Add(new Button("A Button").Tooltip("tooltip!")
                                  // This will print "A Button was clicked" on each click
                                 .OnClicked(s => print(s.Label() + " was clicked"))
                                 .Image(buttonIcon)
                             )
+                            .Add(new PasswordField("Password").ID("pw1").Tooltip("Your secret's safe with me"))
                             .Add(new Toggle("Checkbox 1")
                                  // Bind the value of the checkbox to the Option1 variable
                                 .IsChecked().BindTwoWay(() => Option1, v => Option1 = v)
-                                .OnToggled((source, old, @new) => print(source.Label() + " is now " + @new))
+                                .OnToggled((source, old, nw) => print(source.Label() + " is now " + nw))
                                  // Binding to the visible property makes this control only visible
                                  // when Option1 is true, letting us show/hide it using the Toggle control below
-                                .Visible.BindOneWay(() => Option1)
+                                .Visible().BindOneWay(() => Option1)
                             )
-                            .Add(new PasswordField("Password").ID("pw1"))
-                            .Add(new Toggle("Checkbox 2")
+                            .Add(new Toggle("Toggle hidden options")
                                  // Bind the value of the checkbox to the Option1 variable
                                 .IsChecked().BindTwoWay(() => Option1, v => Option1 = v)
                                  // Print to the console each time the value changes
-                                .OnToggled((source, old, @new) => print(source.Label() + " is now " + @new)))
+                                .OnToggled((source, old, nw) => print(source.Label() + " is now " + nw)))
                         )
                         .AddPage(
                             "Page 2",
@@ -65,16 +69,25 @@ namespace KspExample
                                 .Image(buttonIcon)
                             )
                             .Add(new Toggle("Checkbox 1")
-                                .Visible.BindOneWay(() => Option1)
+                                .Visible().BindOneWay(() => Option1)
                             )
                         )
                         .AddPage(
                             "Page 3",
-                            new Toggle("Button Again")
+                            new VerticalPanel()
+                            //.ID("panel")
+                           // .Add(new Button("This button adds controls")
+                           //     .OnClicked(source => Control.ByID<VerticalPanel>("panel").Add(new Button("Hello!")))
+                           // )
                         )
-                    ).Title().BindOneWay(()=>"title is " + Control.Find<PasswordField>("pw1").Password());
+                        .AddPage(
+                            "Page 4",
+                            new TextArea()
+                        )
+                    ).Title().BindOneWay(()=>"title is " + UI.ByID<PasswordField>("pw1").Password())
+                );
             }
-            gui.Layout();
+            gui.OnGUI();
         }
     }
 }

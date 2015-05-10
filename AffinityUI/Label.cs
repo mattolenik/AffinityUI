@@ -17,7 +17,6 @@ namespace AffinityUI
 		public Label()
 			: base()
 		{
-			Self = this;
             Style(GUI.skin.label);
 		}
 

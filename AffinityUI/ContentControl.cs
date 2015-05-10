@@ -25,8 +25,18 @@ namespace AffinityUI
 		protected ContentControl()
 			: base()
 		{
-			_label = new BindableProperty<ContentControl<TSelf>, String>(this);
-			_tooltip = new BindableProperty<ContentControl<TSelf>, String>(this);
+            _label = new BindableProperty<ContentControl<TSelf>, String>(this);
+            _tooltip = new BindableProperty<ContentControl<TSelf>, String>(this);
+            _label.OnPropertyChanged((source, old, nw) => _content.text = nw);
+            _tooltip.OnPropertyChanged((source, old, nw) =>
+            {
+                _content.tooltip = nw;
+//                var renderer = Context.Owner.gameObject.GetComponent<TooltipRenderer>();
+//                if(renderer != null)
+//                {
+//                    renderer.Tooltip = new GUIContent(nw);
+//                }
+            });
 		}
 
         public GUIContent Content()
@@ -37,7 +47,7 @@ namespace AffinityUI
         public TSelf Content(GUIContent content)
         {
             _content = content;
-            return Self;
+            return this as TSelf;
         }
 
         public BindableProperty<ContentControl<TSelf>, String> Label()
@@ -48,8 +58,7 @@ namespace AffinityUI
         public TSelf Label(String text)
         {
             _label.Value = text;
-            _content.text = text;
-            return Self;
+            return this as TSelf;
         }
             
         public BindableProperty<ContentControl<TSelf>, String> Tooltip()
@@ -60,8 +69,7 @@ namespace AffinityUI
         public TSelf Tooltip(String text)
         {
             _tooltip.Value = text;
-            _content.tooltip = text;
-            return Self;
+            return this as TSelf;
         }
 
         public Texture Image()
@@ -72,7 +80,7 @@ namespace AffinityUI
         public TSelf Image(Texture image)
         {
             _content.image = image;
-            return Self;
+            return this as TSelf;
         }
 
 		/// <summary>
@@ -86,7 +94,7 @@ namespace AffinityUI
 		/// </remarks>
 		public override void Layout()
 		{
-            if (!Visible)
+            if (!Visible())
             {
                 return;
             }
@@ -99,17 +107,9 @@ namespace AffinityUI
 		/// If overriden in a derived class, be sure to call the base class method.
 		/// </summary>
 		protected virtual void UpdateBindings()
-		{
-			if (_label.IsBound)
-			{
-				_label.UpdateBinding();
-				_content.text = _label.Value;
-			}
-			if (_tooltip.IsBound)
-			{
-				_tooltip.UpdateBinding();
-				_content.tooltip = _tooltip.Value;
-			}
-		}
+        {
+            _label.UpdateBinding();
+            _tooltip.UpdateBinding();
+        }
 	}
 }

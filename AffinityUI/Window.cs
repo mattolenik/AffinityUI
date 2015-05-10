@@ -9,6 +9,8 @@ namespace AffinityUI
         readonly int _id;
         Control _content;
         Rect _windowRect;
+        Rect _dragArea;
+        bool _autoDrag;
 
         BindableProperty<Window, String> _text;
 
@@ -16,27 +18,20 @@ namespace AffinityUI
 
         protected Window() : base()
         {
-            _id = 0;//_rand.Next();
-            Self = this;
+            _id = _rand.Next();
+            Style(GUI.skin.window);
             _text = new BindableProperty<Window, string>(this);
         }
 
-        public static Window Create<TGuiTarget>(Rect windowRect, string text)
+        public Window(Rect windowRect) : this()
         {
-            var result = new Window{ _windowRect = windowRect }.Title(text);
-            result.TargetType = typeof(TGuiTarget);
-            if (result.TargetType != typeof(GUILayout) &&
-                result.TargetType != typeof(GUI))
-            {
-                throw new ArgumentException("Generic argument must be type GUI or GUILayout ", "TGuiTarget");
-            }
-            return result;
+            _windowRect = windowRect;
         }
 
         public Window Content(Control content)
         {
             _content = content;
-            _content.TargetType = TargetType;
+            _content.Context = Context;
             return this;
         }
 
@@ -51,6 +46,30 @@ namespace AffinityUI
             return this;
         }
 
+        public Window Drag(Rect dragArea)
+        {
+            _dragArea = dragArea;
+            return this;
+        }
+
+        public Window Drag()
+        {
+            _autoDrag = true;
+            return this;
+        }
+
+        public Window DragTitlebar(int height)
+        {
+            _dragArea = new Rect(0, 0, _windowRect.width, height);
+            return this;
+        }
+
+        public Window DragTitlebar()
+        {
+            _dragArea = new Rect(0, 0, _windowRect.width, Style().border.top);
+            return this;
+        }
+
         protected override void Layout_GUI()
         {
             _windowRect = GUI.Window(_id, _windowRect, windowFunc, _text);
@@ -58,12 +77,33 @@ namespace AffinityUI
 
         protected override void Layout_GUILayout()
         {
-            _windowRect = GUILayout.Window(_id, _windowRect, windowFunc, _text, LayoutOptions());
+            _windowRect = GUILayout.Window(_id, _windowRect, windowFunc, _text, Style(), LayoutOptions());
         }
 
         void windowFunc(int windowID)
         {
+            if (_autoDrag)
+            {
+                GUI.DragWindow();
+            }
+            else
+            {
+                GUI.DragWindow(_dragArea);
+            }
             _content.Layout();
+        }
+
+        protected internal override UIContext Context
+        {
+            get
+            {
+                return base.Context;
+            }
+            set
+            {
+                base.Context = value;
+                _content.Context = value;
+            }
         }
     }
 }

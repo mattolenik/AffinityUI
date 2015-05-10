@@ -36,7 +36,6 @@ namespace AffinityUI
             _xCount = new BindableProperty<SelectionGrid, int>(this);
             _xCount.OnPropertyChanged((source, old, nw) => autoXCount = false);
             Style(GUI.skin.button);
-            Self = this;
         }
 
         public BindableProperty<SelectionGrid, int> XCount()

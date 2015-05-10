@@ -16,7 +16,6 @@ namespace AffinityUI
 		public Toggle()
 			: base()
 		{
-			Self = this;
             Style(GUI.skin.toggle);
             _isChecked = new BindableProperty<Toggle, bool>(this);
 		}

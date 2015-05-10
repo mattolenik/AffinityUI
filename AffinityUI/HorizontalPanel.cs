@@ -9,7 +9,7 @@ namespace AffinityUI
 	/// <summary>
 	/// A layout panel whose children are stacked horizontally.
 	/// </summary>
-	public class HorizontalPanel : Composite
+    public class HorizontalPanel : Composite<HorizontalPanel>
 	{
 		/// <summary>
 		/// Called when layout begins when using GUILayout.
