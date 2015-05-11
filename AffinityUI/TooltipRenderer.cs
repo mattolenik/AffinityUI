@@ -63,7 +63,7 @@ namespace AffinityUI
                     !ste.Expired)
                 {
                     var pos = Event.current.mousePosition;
-                    var size = GUI.skin.label.CalcSize(_tooltips[key]);
+                    var size = key.Style().CalcSize(_tooltips[key]);
                     GUI.Label(new Rect(pos.x + CursorOffset.x, pos.y + CursorOffset.y, size.x, size.y), _tooltips[key], key.Style());
                 }
                 if (ste.LastStarted + Timeout < DateTime.Now)

@@ -43,7 +43,7 @@ namespace KspExample
                         .AddPage(
                             "Page 1",
                             new VerticalPanel()
-                            .Add(new Button("A Button").Tooltip("tooltip!")._
+                            .Add(new Button("A Button").Tooltip("tooltip!").Style(() => GUI.skin.textField)._
                                  // This will print "A Button was clicked" on each click
                                 .OnClicked(s => print(s.Label() + " was clicked"))
                                 .Image(buttonIcon)
