@@ -44,16 +44,19 @@ namespace AffinityUI
 
         public Vector2 CursorOffset { get; set; }
 
+        public int Depth { get; set; }
+
         public TooltipRenderer()
         {
             Delay = TimeSpan.FromMilliseconds(500);
             Timeout = TimeSpan.FromSeconds(8);
             CursorOffset = new Vector2(25, 10);
+            Depth = -10;
         }
 
         void OnGUI()
         {
-            GUI.depth = -10;
+            GUI.depth = Depth;
             foreach (var key in _tooltips.Keys)
             {
                 var ste = state[key];
