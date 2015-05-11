@@ -6,11 +6,11 @@ namespace AffinityUI
 {
     public class TooltipRenderer : MonoBehaviour
     {
-        Dictionary<Control, GUIContent> _tooltips = new Dictionary<Control, GUIContent>();
+        Dictionary<ITooltipStyle, GUIContent> _tooltips = new Dictionary<ITooltipStyle, GUIContent>();
 
-        Dictionary<Control, State> state = new Dictionary<Control, State>();
+        Dictionary<ITooltipStyle, State> state = new Dictionary<ITooltipStyle, State>();
 
-        public void StartTooltip(Control control, string text)
+        public void StartTooltip<TOwner>(Tooltip<TOwner> control, string text) where TOwner : Control
         {
             if (state.ContainsKey(control))
             {
@@ -28,7 +28,7 @@ namespace AffinityUI
             }
         }
 
-        public void StopTooltip(Control control)
+        public void StopTooltip<TOwner>(Tooltip<TOwner> control) where TOwner : Control
         {
             if (state.ContainsKey(control))
             {
@@ -40,9 +40,15 @@ namespace AffinityUI
 
         public TimeSpan Timeout { get; set; }
 
+        public TimeSpan Delay { get; set; }
+
+        public Vector2 CursorOffset { get; set; }
+
         public TooltipRenderer()
         {
-            Timeout = TimeSpan.FromSeconds(2);
+            Delay = TimeSpan.FromMilliseconds(500);
+            Timeout = TimeSpan.FromSeconds(8);
+            CursorOffset = new Vector2(25, 10);
         }
 
         void OnGUI()
@@ -51,11 +57,14 @@ namespace AffinityUI
             foreach (var key in _tooltips.Keys)
             {
                 var ste = state[key];
-                if (ste.LastStarted + Timeout > DateTime.Now && ste.LastEnded < ste.LastStarted && !ste.Expired)
+                if (ste.LastStarted + Timeout > DateTime.Now &&
+                    ste.LastStarted + Delay < DateTime.Now &&
+                    ste.LastEnded < ste.LastStarted &&
+                    !ste.Expired)
                 {
                     var pos = Event.current.mousePosition;
                     var size = GUI.skin.label.CalcSize(_tooltips[key]);
-                    GUI.Label(new Rect(pos.x + 25, pos.y, size.x, size.y), _tooltips[key], GUI.skin.label);
+                    GUI.Label(new Rect(pos.x + CursorOffset.x, pos.y + CursorOffset.y, size.x, size.y), _tooltips[key], key.Style());
                 }
                 if (ste.LastStarted + Timeout < DateTime.Now)
                 {
@@ -69,7 +78,7 @@ namespace AffinityUI
         {
             public DateTime LastStarted;
             public DateTime LastEnded;
-            public bool Expired = false;
+            public bool Expired;
         }
     }
 }

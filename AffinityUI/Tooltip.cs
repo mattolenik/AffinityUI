@@ -3,7 +3,12 @@ using UnityEngine;
 
 namespace AffinityUI
 {
-    public class Tooltip<TOwner> where TOwner : Control
+    internal interface ITooltipStyle
+    {
+        GUIStyle Style();
+    }
+
+    public class Tooltip<TOwner> : ITooltipStyle where TOwner : Control
     {
         TOwner owner;
 
@@ -11,11 +16,14 @@ namespace AffinityUI
 
         Func<Rect> tooltipAreaGetter;
 
+        Func<GUIStyle> styleGetter;
+
         public Tooltip(TOwner owner)
         {
             this.owner = owner;
             tooltip = new BindableProperty<TOwner, string>(owner);
             tooltipAreaGetter = () => owner.Position();
+            styleGetter = () => GUI.skin.label;
         }
 
         public TOwner _ { get { return owner; } }
@@ -42,22 +50,33 @@ namespace AffinityUI
             return tooltipAreaGetter();
         }
 
+        public GUIStyle Style()
+        {
+            return styleGetter();
+        }
+
+        public Tooltip<TOwner>Style(Func<GUIStyle> getter)
+        {
+            styleGetter = getter;
+            return this;
+        }
+
         public void Layout()
         {
             var renderer = owner.Context.Owner.gameObject.GetComponent<TooltipRenderer>();
-            if (renderer != null)
+            if (renderer == null ||
+                string.IsNullOrEmpty(tooltip.Value) ||
+                Event.current.type != EventType.Repaint)
             {
-                if (Event.current.type == EventType.Repaint)
-                {
-                    if (Area().Contains(Event.current.mousePosition))
-                    {
-                        renderer.StartTooltip(owner, Text());
-                    }
-                    else
-                    {
-                        renderer.StopTooltip(owner);
-                    }
-                }
+                return;
+            }
+            if (Area().Contains(Event.current.mousePosition))
+            {
+                renderer.StartTooltip(this, Text());
+            }
+            else
+            {
+                renderer.StopTooltip(this);
             }
         }
     }

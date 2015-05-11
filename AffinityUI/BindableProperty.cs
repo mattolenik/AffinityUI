@@ -25,11 +25,6 @@ namespace AffinityUI
 		/// </summary>
 		public event PropertyChangedEventHandler<TOwner, TProperty> PropertyChanged;
 
-		bool isBound
-		{
-			get { return _binder != null; }
-		}
-
 		/// <summary>
 		/// Gets the binding direction. Throws an <see cref="InvalidOperationException"/> if the property is not bound.
 		/// </summary>
@@ -157,10 +152,6 @@ namespace AffinityUI
 		/// </summary>
 		public void UpdateBinding()
 		{
-            if (!isBound)
-            {
-                return;
-            }
 			if (_binder != null &&
 					(_binder.Direction == BindingDirection.TwoWay || _binder.Direction == BindingDirection.OneWay))
 			{
