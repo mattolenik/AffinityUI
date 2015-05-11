@@ -16,17 +16,8 @@ namespace AffinityUI
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Area"/> class.
 		/// </summary>
-		public Area()
-			: base()
-		{
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Area"/> class.
-		/// </summary>
 		/// <param name="dimensions">The dimensions.</param>
-		public Area(Rect dimensions)
-			: this()
+        public Area(Rect dimensions) : base()
 		{
 			_dimensions = dimensions;
 		}

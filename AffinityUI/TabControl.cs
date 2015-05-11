@@ -11,7 +11,7 @@ namespace AffinityUI
     /// </summary>
     public class TabControl : TypedControl<TabControl>
     {
-        SelectionGrid tabButtons = new SelectionGrid();
+        SelectionGrid tabButtons;
 
         Dictionary<int, Control> pageMap = new Dictionary<int, Control>();
 
@@ -22,7 +22,10 @@ namespace AffinityUI
         /// </summary>
         public TabControl() : base()
         {
+            tabButtons = new SelectionGrid();
             tabButtons.Selected().OnPropertyChanged((source, old, nw) => ShowTab(nw));
+            tabButtons.Context = Context;
+            tabButtons.Parent = this;
         }
 
         /// <summary>
@@ -36,11 +39,11 @@ namespace AffinityUI
             tabButtons.AddButton(new BindableContent().Label(name));
             pageMap.Add(pageMap.Count, page);
             page.Parent = this;
+            page.Context = Context;
             if (!page.IndependantSkin)
             {
                 page.SkinValue = SkinValue;
             }
-            page.Context = Context;
             return this;
         }
 

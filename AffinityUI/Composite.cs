@@ -87,10 +87,6 @@ namespace AffinityUI
 		/// </summary>
 		protected virtual void OnEndLayout_GUILayout() { }
 
-		/// <summary>
-		/// Gets or sets the type of the target, either GUILayout or EditorGUILayout.
-		/// </summary>
-		/// <value>The type of the layout target.</value>
 		protected internal override UIContext Context
 		{
 			get
@@ -113,7 +109,7 @@ namespace AffinityUI
 		/// <typeparam name="TControl">The type of the control.</typeparam>
 		/// <param name="control">The control.</param>
 		/// <returns>The current composite instance.</returns>
-        public TSelf Add<TControl>(TControl control) where TControl : Control
+        public TSelf Add(Control control)
 		{
 			Children.Add(control);
 			control.Context = Context;
@@ -134,6 +130,7 @@ namespace AffinityUI
 		{
 			Children.Remove(control);
 			control.Parent = null;
+            control.Context = null;
             return this as TSelf;
 		}
 

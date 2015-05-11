@@ -31,6 +31,7 @@ namespace AffinityUI
         public Window Content(Control content)
         {
             _content = content;
+            _content.Parent = this;
             _content.Context = Context;
             _content.SkinValue = SkinValue;
             return this;
@@ -119,7 +120,10 @@ namespace AffinityUI
             set
             {
                 base.Context = value;
-                _content.Context = value;
+                if (_content != null)
+                {
+                    _content.Context = value;
+                }
             }
         }
     }

@@ -11,10 +11,10 @@ namespace AffinityUI
 
         internal static void RegisterID(Control control, string id)
         {
-            if (controlsById.ContainsKey(id))
-            {
-                throw new InvalidOperationException(string.Format("ID '{0}' already taken by control of type '{1}'", id, control.GetType().Name));
-            }
+//            if (controlsById.ContainsKey(id))
+//            {
+//                throw new InvalidOperationException(string.Format("ID '{0}' already taken by control of type '{1}'", id, control.GetType().Name));
+//            }
             controlsById[id] = control;
             idsByControl[control] = id;
         }

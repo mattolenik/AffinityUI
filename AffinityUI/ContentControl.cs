@@ -13,11 +13,11 @@ namespace AffinityUI
 	/// <typeparam name="TSelf">The type of the implementing subclass.</typeparam>
 	public abstract class ContentControl<TSelf> : TypedControl<TSelf> where TSelf : Control
 	{
-		GUIContent _content = new GUIContent();
+		GUIContent _content;
 
-        BindableProperty<ContentControl<TSelf>, string> _label;
+        BindableProperty<TSelf, string> _label;
 
-        BindableProperty<ContentControl<TSelf>, string> _tooltip;
+        BindableProperty<TSelf, string> _tooltip;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ContentControl&lt;TSelf&gt;"/> class.
@@ -25,18 +25,11 @@ namespace AffinityUI
 		protected ContentControl()
 			: base()
 		{
-            _label = new BindableProperty<ContentControl<TSelf>, string>(this);
-            _tooltip = new BindableProperty<ContentControl<TSelf>, string>(this);
+            _content = new GUIContent();
+            _label = new BindableProperty<TSelf, string>(this as TSelf);
+            _tooltip = new BindableProperty<TSelf, string>(this as TSelf);
             _label.OnPropertyChanged((source, old, nw) => _content.text = nw);
-            _tooltip.OnPropertyChanged((source, old, nw) =>
-            {
-                _content.tooltip = nw;
-//                var renderer = Context.Owner.gameObject.GetComponent<TooltipRenderer>();
-//                if(renderer != null)
-//                {
-//                    renderer.Tooltip = new GUIContent(nw);
-//                }
-            });
+            _tooltip.OnPropertyChanged((source, old, nw) => _content.tooltip = nw);
 		}
 
         public GUIContent Content()
@@ -50,7 +43,7 @@ namespace AffinityUI
             return this as TSelf;
         }
 
-        public BindableProperty<ContentControl<TSelf>, string> Label()
+        public BindableProperty<TSelf, string> Label()
         {
             return _label;
         }
@@ -61,7 +54,7 @@ namespace AffinityUI
             return this as TSelf;
         }
             
-        public BindableProperty<ContentControl<TSelf>, string> Tooltip()
+        public BindableProperty<TSelf, string> Tooltip()
         {
             return _tooltip;
         }
@@ -99,14 +92,28 @@ namespace AffinityUI
                 return;
             }
 			UpdateBindings();
-			base.Layout();
+
+            base.Layout();
+
+            var renderer = Context.Owner.gameObject.GetComponent<TooltipRenderer>();
+            if (renderer != null)
+            {
+                if (Event.current.type == EventType.Repaint)
+                {
+                    if (GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
+                    {
+                        renderer.ShouldRender[this] = true;
+                        renderer.Tooltip[this] = new GUIContent(_tooltip);
+                    }
+                    else
+                    {
+                        renderer.ShouldRender[this] = false;
+                    }
+                }
+            }
 		}
 
-		/// <summary>
-		/// Updates and <see cref="BindableProperty&lt;TOwner, TProperty&gt;"/> members.
-		/// If overriden in a derived class, be sure to call the base class method.
-		/// </summary>
-		protected virtual void UpdateBindings()
+        protected virtual void UpdateBindings()
         {
             _label.UpdateBinding();
             _tooltip.UpdateBinding();

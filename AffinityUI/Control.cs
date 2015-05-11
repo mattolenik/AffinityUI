@@ -8,7 +8,7 @@ namespace AffinityUI
 {
     /// <summary>
     /// The absolute base class for all controls, provides little functionality
-    /// and mostly serves as a handle for referencing all other controls.
+    /// and mostly serves as a handle for referencing all other types of controls.
     /// </summary>
 	public abstract class Control
 	{

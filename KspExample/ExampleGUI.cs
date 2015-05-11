@@ -28,7 +28,7 @@ namespace KspExample
 
         void OnGUI()
         {
-            GUI.depth = 100;
+            GUI.depth = 20;
 
             if (gui == null)
             {

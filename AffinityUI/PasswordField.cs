@@ -10,17 +10,9 @@ namespace AffinityUI
 	{
         BindableProperty<PasswordField, string> _password;
 
-		/// <summary>
-		/// Gets or sets the mask character, used only by GUI and GUILayout contexts.
-		/// </summary>
-		/// <value>The mask.</value>
-		public char Mask { get; set; }
+        char _mask;
 
-		/// <summary>
-		/// Gets or sets the maximum password length, used only by GUI and GUILayout contexts.
-		/// </summary>
-		/// <value>The length of the max.</value>
-		public int MaxLength { get; set; }
+        int _maxLength;
 
         public BindableProperty<PasswordField, string> Password()
         {
@@ -33,14 +25,36 @@ namespace AffinityUI
             return this;
         }
 
+        public PasswordField Mask(char mask)
+        {
+            _mask = mask;
+            return this;
+        }
+
+        public char Mask()
+        {
+            return _mask;
+        }
+
+        public PasswordField MaxLength(int maxLength)
+        {
+            _maxLength = maxLength;
+            return this;
+        }
+
+        public int MaxLength()
+        {
+            return _maxLength;
+        }
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PasswordField"/> class.
 		/// </summary>
 		public PasswordField()
 			: base()
 		{
-			Mask = '*';
-			MaxLength = Int32.MaxValue;
+			_mask = '*';
+			_maxLength = Int32.MaxValue;
             Style(() => GUI.skin.textField);
             _password = new BindableProperty<PasswordField, string>(this, string.Empty);
 		}
@@ -71,7 +85,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUI()
 		{
-            Password(GUI.PasswordField(Position(), Password(), Mask, MaxLength, Style()));
+            Password(GUI.PasswordField(Position(), Password(), _mask, _maxLength, Style()));
 		}
 
 		/// <summary>
@@ -79,7 +93,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUILayout()
 		{
-            Password(GUILayout.PasswordField(Password(), Mask, MaxLength, Style(), LayoutOptions()));
+            Password(GUILayout.PasswordField(Password(), _mask, _maxLength, Style(), LayoutOptions()));
 		}
 	}
 }
