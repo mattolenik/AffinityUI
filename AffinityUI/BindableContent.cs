@@ -11,11 +11,13 @@ namespace AffinityUI
     /// </summary>
     public class BindableContent<TOwner>
     {
+        TOwner owner;
+
         BindableProperty<TOwner, string> _label;
 
-        BindableProperty<TOwner, string> _tooltip;
+        GUIContent _content;
 
-        public GUIContent Content { get; set; }
+        public TOwner _ { get { return owner; } }
 
         public BindableProperty<TOwner, string> Label()
         {
@@ -28,25 +30,25 @@ namespace AffinityUI
             return this;
         }
 
-        public BindableProperty<TOwner, string>Tooltip()
+        public GUIContent Content()
         {
-            return _tooltip;
+            return _content;
         }
 
-        public BindableContent<TOwner> Tooltip(string text)
+        public BindableContent<TOwner> Content(GUIContent content)
         {
-            _tooltip.Value = text;
+            _content = content;
             return this;
         }
 
         public Texture Image()
         {
-            return Content.image;
+            return _content.image;
         }
 
         public BindableContent<TOwner> Image(Texture image)
         {
-            Content.image = image;
+            _content.image = image;
             return this;
         }
 
@@ -57,17 +59,15 @@ namespace AffinityUI
 
         public BindableContent(TOwner owner, GUIContent content)
         {
-            Content = content;
+            this.owner = owner;
+            _content = content;
             _label = new BindableProperty<TOwner, string>(owner);
-            _label.OnPropertyChanged(((src, old, nw) => Content.text = nw));
-            _tooltip = new BindableProperty<TOwner, string>(owner);
-            _tooltip.OnPropertyChanged(((src, old, nw) => Content.tooltip = nw));
+            _label.OnPropertyChanged(((src, old, nw) => _content.text = nw));
         }
 
         public void UpdateBinding()
         {
             _label.UpdateBinding();
-            _tooltip.UpdateBinding();
         }
     }
 }

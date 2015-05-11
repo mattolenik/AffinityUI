@@ -12,13 +12,31 @@ namespace AffinityUI
     /// </summary>
 	public abstract class Control
 	{
-		protected internal virtual UIContext Context { get; set; }
+        protected internal virtual UIContext Context { get; set; }
+
+        Rect _position;
 
         /// <summary>
         /// Gets or sets (protected internal) the owning parent of this control.
         /// </summary>
         /// <value>The parent control.</value>
 		public Control Parent { get; protected internal set; }
+
+        /// <summary>
+        /// Sets the position of the control.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <returns>this instance</returns>
+        public Control Position(Rect position)
+        {
+            _position = position;
+            return this;
+        }
+
+        public Rect Position()
+        {
+            return _position;
+        }
 
 		/// <summary>
 		/// Performs the necessary calls to UnityGUI to perform layout or updates.
@@ -40,6 +58,7 @@ namespace AffinityUI
                     break;
                 case LayoutTarget.GUILayout:
                     Layout_GUILayout();
+                    _position = GUILayoutUtility.GetLastRect();
                     break;
                 default:
                     throw new InvalidOperationException("Layout must be either GUI or GUILayout");

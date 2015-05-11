@@ -36,7 +36,7 @@ namespace AffinityUI
         /// <returns>this instance</returns>
         public TabControl AddPage(string name, Control page)
         {
-            tabButtons.AddButton(new BindableContent<SelectionGrid>(tabButtons).Label(name));
+            tabButtons.Add(new BindableContent<SelectionGrid>(tabButtons).Label(name));
             pageMap.Add(pageMap.Count, page);
             page.Parent = this;
             page.Context = Context;

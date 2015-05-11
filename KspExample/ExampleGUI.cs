@@ -43,12 +43,12 @@ namespace KspExample
                         .AddPage(
                             "Page 1",
                             new VerticalPanel()
-                            .Add(new Button("A Button").Tooltip("tooltip!")
+                            .Add(new Button("A Button").Tooltip("tooltip!")._
                                  // This will print "A Button was clicked" on each click
                                 .OnClicked(s => print(s.Label() + " was clicked"))
                                 .Image(buttonIcon)
                             )
-                            .Add(new PasswordField("Password").ID("pw1").Tooltip("Your secret's safe with me"))
+                            .Add(new PasswordField("Password").ID("pw1").Tooltip("Your secret's safe with me")._)
                             .Add(new Toggle("Checkbox 1")
                                  // Bind the value of the checkbox to the Option1 variable
                                 .IsChecked().BindTwoWay(() => Option1, v => Option1 = v)

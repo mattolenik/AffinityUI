@@ -12,8 +12,6 @@ namespace AffinityUI
 	/// <typeparam name="TSelf">The type of the implementing subclass.</typeparam>
 	public abstract class TypedControl<TSelf> : Control where TSelf : Control
 	{
-        Rect _position;
-
         GUILayoutOption[] _layoutOptions;
 
         Func<GUIStyle> _styleFunc = () => GUIStyle.none;
@@ -31,22 +29,6 @@ namespace AffinityUI
         {
             UI.RegisterID(this, id);
             return this as TSelf;
-        }
-
-		/// <summary>
-		/// Sets the position of the control.
-		/// </summary>
-		/// <param name="position">The position.</param>
-		/// <returns>this instance</returns>
-		public TSelf Position(Rect position)
-		{
-            _position = position;
-            return this as TSelf;
-		}
-
-        public Rect Position()
-        {
-            return _position;
         }
 
 		/// <summary>

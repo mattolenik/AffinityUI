@@ -14,6 +14,7 @@ namespace AffinityUI
 	public abstract class ContentControl<TSelf> : TypedControl<TSelf> where TSelf : Control
 	{
         BindableContent<TSelf> _content;
+        Tooltip<TSelf> tooltip;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ContentControl&lt;TSelf&gt;"/> class.
@@ -22,11 +23,12 @@ namespace AffinityUI
 			: base()
         {
             _content = new BindableContent<TSelf>(this as TSelf);
+            tooltip = new Tooltip<TSelf>(this as TSelf);
         }
 
         public GUIContent Content()
         {
-            return _content.Content;
+            return _content.Content();
         }
 
         public TSelf Content(GUIContent content)
@@ -48,13 +50,13 @@ namespace AffinityUI
             
         public BindableProperty<TSelf, string> Tooltip()
         {
-            return _content.Tooltip();
+            return tooltip.Text();
         }
 
-        public TSelf Tooltip(string text)
+        public Tooltip<TSelf> Tooltip(string text)
         {
-            _content.Tooltip(text);
-            return this as TSelf;
+            tooltip.Text(text);
+            return tooltip;
         }
 
         public Texture Image()
@@ -83,26 +85,9 @@ namespace AffinityUI
             {
                 return;
             }
-			UpdateBindings();
-
+            UpdateBindings();
             base.Layout();
-
-            var renderer = Context.Owner.gameObject.GetComponent<TooltipRenderer>();
-            if (renderer != null)
-            {
-                if (Event.current.type == EventType.Repaint)
-                {
-                    if (GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
-                    {
-                        renderer.ShouldRender[this] = true;
-                        renderer.Tooltip[this] = new GUIContent(Tooltip());
-                    }
-                    else
-                    {
-                        renderer.ShouldRender[this] = false;
-                    }
-                }
-            }
+            tooltip.Layout();
 		}
 
         protected virtual void UpdateBindings()

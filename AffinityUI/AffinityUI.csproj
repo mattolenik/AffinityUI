@@ -64,6 +64,7 @@
     <Compile Include="UI.cs" />
     <Compile Include="TypedControl.cs" />
     <Compile Include="Control.cs" />
+    <Compile Include="Tooltip.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
