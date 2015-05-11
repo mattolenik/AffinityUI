@@ -13,66 +13,58 @@ namespace AffinityUI
 	/// <typeparam name="TSelf">The type of the implementing subclass.</typeparam>
 	public abstract class ContentControl<TSelf> : TypedControl<TSelf> where TSelf : Control
 	{
-		GUIContent _content;
-
-        BindableProperty<TSelf, string> _label;
-
-        BindableProperty<TSelf, string> _tooltip;
+        BindableContent<TSelf> _content;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ContentControl&lt;TSelf&gt;"/> class.
 		/// </summary>
 		protected ContentControl()
 			: base()
-		{
-            _content = new GUIContent();
-            _label = new BindableProperty<TSelf, string>(this as TSelf);
-            _tooltip = new BindableProperty<TSelf, string>(this as TSelf);
-            _label.OnPropertyChanged((source, old, nw) => _content.text = nw);
-            _tooltip.OnPropertyChanged((source, old, nw) => _content.tooltip = nw);
-		}
+        {
+            _content = new BindableContent<TSelf>(this as TSelf);
+        }
 
         public GUIContent Content()
         {
-            return _content;
+            return _content.Content;
         }
 
         public TSelf Content(GUIContent content)
         {
-            _content = content;
+            _content = new BindableContent<TSelf>(this as TSelf, content);
             return this as TSelf;
         }
 
         public BindableProperty<TSelf, string> Label()
         {
-            return _label;
+            return _content.Label();
         }
 
         public TSelf Label(string text)
         {
-            _label.Value = text;
+            _content.Label(text);
             return this as TSelf;
         }
             
         public BindableProperty<TSelf, string> Tooltip()
         {
-            return _tooltip;
+            return _content.Tooltip();
         }
 
         public TSelf Tooltip(string text)
         {
-            _tooltip.Value = text;
+            _content.Tooltip(text);
             return this as TSelf;
         }
 
         public Texture Image()
         {
-            return _content.image;
+            return _content.Image();
         }
 
         public TSelf Image(Texture image)
         {
-            _content.image = image;
+            _content.Image(image);
             return this as TSelf;
         }
 
@@ -103,7 +95,7 @@ namespace AffinityUI
                     if (GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
                     {
                         renderer.ShouldRender[this] = true;
-                        renderer.Tooltip[this] = new GUIContent(_tooltip);
+                        renderer.Tooltip[this] = new GUIContent(Tooltip());
                     }
                     else
                     {
@@ -115,8 +107,7 @@ namespace AffinityUI
 
         protected virtual void UpdateBindings()
         {
-            _label.UpdateBinding();
-            _tooltip.UpdateBinding();
+            _content.UpdateBinding();
         }
 	}
 }

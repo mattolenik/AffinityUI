@@ -8,7 +8,7 @@ namespace AffinityUI
 {
     public class SelectionGrid : TypedControl<SelectionGrid>
     {
-        public IList<BindableContent> Buttons { get; private set; }
+        public IList<BindableContent<SelectionGrid>> Buttons { get; private set; }
 
         BindableProperty<SelectionGrid, int> _selected;
 
@@ -31,7 +31,7 @@ namespace AffinityUI
 
         public SelectionGrid() : base()
         {
-            Buttons = new List<BindableContent>();
+            Buttons = new List<BindableContent<SelectionGrid>>();
             _selected = new BindableProperty<SelectionGrid, int>(this);
             _xCount = new BindableProperty<SelectionGrid, int>(this);
             _xCount.OnPropertyChanged((source, old, nw) => autoXCount = false);
@@ -51,10 +51,10 @@ namespace AffinityUI
 
         public SelectionGrid AddButton(string label)
         {
-            return AddButton(new BindableContent().Label(label));
+            return AddButton(new BindableContent<SelectionGrid>(this).Label(label));
         }
 
-        public SelectionGrid AddButton(BindableContent content)
+        public SelectionGrid AddButton(BindableContent<SelectionGrid> content)
         {
             Buttons.Add(content);
             buttonContents = Buttons.Select(x => x.Content).ToArray();
