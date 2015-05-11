@@ -11,22 +11,29 @@ namespace AffinityUI
 	/// </summary>
 	public class TextField : ContentControl<TextField>
 	{
-		/// <summary>
-		/// Gets or sets the maximum length of the text. Defaults to <see cref="Int32.MaxValue"/>.
-		/// </summary>
-		/// <value>The maximum text length.</value>
-		public int MaxLength { get; set; }
+        int maxLength;
 
-        BindableProperty<TextField, string> _text;
+        BindableProperty<TextField, string> text;
 
         public BindableProperty<TextField, string> Text()
         {
-            return _text;
+            return text;
         }
 
         public TextField Text(string text)
         {
-            _text.Value = text;
+            this.text.Value = text;
+            return this;
+        }
+
+        public int MaxLength()
+        {
+            return maxLength;
+        }
+
+        public TextField MaxLength(int length)
+        {
+            this.maxLength = length;
             return this;
         }
 
@@ -37,8 +44,8 @@ namespace AffinityUI
 			: base()
 		{
             Style(() => GUI.skin.textField);
-			_text = new BindableProperty<TextField, string>(this);
-			MaxLength = Int32.MaxValue;
+			text = new BindableProperty<TextField, string>(this);
+			maxLength = Int32.MaxValue;
 		}
 
 		/// <summary>
@@ -55,7 +62,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUI()
 		{
-            Text(GUI.TextField(Position(), Text(), MaxLength, Style()));
+            Text(GUI.TextField(Position(), Text(), maxLength, Style()));
 		}
 
 		/// <summary>
@@ -63,7 +70,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUILayout()
 		{
-            Text(GUILayout.TextField(Text(), MaxLength, Style(), LayoutOptions()));
+            Text(GUILayout.TextField(Text(), maxLength, Style(), LayoutOptions()));
 		}
 	}
 }

@@ -4,22 +4,22 @@ using UnityEngine;
 
 namespace AffinityUI
 {
-    public static class UI
+    public class UI
     {
-        static readonly Dictionary<string, Control> controlsById = new Dictionary<string, Control>(StringComparer.OrdinalIgnoreCase);
-        static readonly Dictionary<Control, string> idsByControl = new Dictionary<Control, string>();
+        readonly Dictionary<string, Control> controlsById = new Dictionary<string, Control>(StringComparer.OrdinalIgnoreCase);
+        readonly Dictionary<Control, string> idsByControl = new Dictionary<Control, string>();
 
-        internal static void RegisterID(Control control, string id)
+        internal LayoutTarget Layout { get; set; }
+        internal MonoBehaviour Owner { get; set; }
+        internal Control Content { get; set; }
+
+        internal void RegisterID(Control control, string id)
         {
-//            if (controlsById.ContainsKey(id))
-//            {
-//                throw new InvalidOperationException(string.Format("ID '{0}' already taken by control of type '{1}'", id, control.GetType().Name));
-//            }
             controlsById[id] = control;
             idsByControl[control] = id;
         }
 
-        public static TControl ByID<TControl>(string id) where TControl : Control
+        public TControl ByID<TControl>(string id) where TControl : Control
         {
             Control value;
             if (controlsById.TryGetValue(id, out value))
@@ -29,7 +29,7 @@ namespace AffinityUI
             throw new KeyNotFoundException(string.Format("Could not find control with ID '{0}'", id));
         }
 
-        public static string IdOf(Control control)
+        public string IdOf(Control control)
         {
             string value;
             if (idsByControl.TryGetValue(control, out value))
@@ -39,26 +39,19 @@ namespace AffinityUI
             return null;
         }
 
-        public static UIContext GUI(MonoBehaviour owner, Control content)
+        public static UI GUI(MonoBehaviour owner, Control content)
         {
-            var context = new UIContext{ Layout = LayoutTarget.GUI, Owner = owner, Content = content };
-            content.Context = context;
-            return context;
+            var ui = new UI{ Layout = LayoutTarget.GUI, Owner = owner, Content = content };
+            content.Context = ui;
+            return ui;
         }
 
-        public static UIContext GUILayout(MonoBehaviour owner, Control content)
+        public static UI GUILayout(MonoBehaviour owner, Control content)
         {
-            var context = new UIContext{ Layout = LayoutTarget.GUILayout, Owner = owner, Content = content };
-            content.Context = context;
-            return context;
+            var ui = new UI { Layout = LayoutTarget.GUILayout, Owner = owner, Content = content };
+            content.Context = ui;
+            return ui;
         }
-    }
-        
-    public class UIContext
-    {
-        internal LayoutTarget Layout { get; set; }
-        internal MonoBehaviour Owner { get; set; }
-        internal Control Content { get; set; }
 
         public void OnGUI()
         {

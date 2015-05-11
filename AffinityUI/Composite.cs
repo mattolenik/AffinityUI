@@ -87,7 +87,7 @@ namespace AffinityUI
 		/// </summary>
 		protected virtual void OnEndLayout_GUILayout() { }
 
-		protected internal override UIContext Context
+		public override UI Context
 		{
 			get
 			{

@@ -111,7 +111,7 @@ namespace AffinityUI
             _content.Layout();
         }
 
-        protected internal override UIContext Context
+        public override UI Context
         {
             get
             {

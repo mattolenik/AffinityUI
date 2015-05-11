@@ -12,7 +12,21 @@ namespace AffinityUI
     /// </summary>
 	public abstract class Control
 	{
-        protected internal virtual UIContext Context { get; set; }
+        UI context;
+        string id;
+
+        public virtual UI Context
+        {
+            get { return context; }
+            set
+            {
+                context = value;
+                if (id != null && context != null)
+                {
+                    context.RegisterID(this, id);
+                }
+            }
+        }
 
         Rect _position;
 
@@ -87,13 +101,19 @@ namespace AffinityUI
         /// <param name="id">an ID used to refer to this control.</param>
         public Control ID(string id)
         {
-            UI.RegisterID(this, id);
+            // At this point in time, Context may be null. If so, the ID
+            // will be picked up and set when Context is first set.
+            if (Context != null)
+            {
+                Context.RegisterID(this, id);
+            }
+            this.id = id;
             return this;
         }
 
         public string ID()
         {
-            return UI.IdOf(this);
+            return id;
         }
 
         /// <summary>

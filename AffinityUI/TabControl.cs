@@ -90,7 +90,7 @@ namespace AffinityUI
             GUILayout.EndVertical();
         }
 
-        internal protected override UIContext Context
+        public override UI Context
         {
             get
             {

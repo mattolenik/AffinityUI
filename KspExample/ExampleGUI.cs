@@ -20,7 +20,7 @@ namespace KspExample
 
     public class ExampleGUI : MonoBehaviour
     {
-        UIContext gui;
+        UI ui;
 
         bool Option1 { get; set; }
 
@@ -30,9 +30,9 @@ namespace KspExample
         {
             GUI.depth = 20;
 
-            if (gui == null)
+            if (ui == null)
             {
-                gui = UI.GUILayout(this,
+                ui = UI.GUILayout(this,
                     new Window(new Rect(100, 100, 500, 500))
                     .ID("window")
                     .Title("Window Title")
@@ -62,8 +62,8 @@ namespace KspExample
                                 .IsChecked().BindTwoWay(() => Option1, v => Option1 = v)
                                  // Print to the console each time the value changes
                                 .OnToggled((source, old, nw) => print(source.Label() + " is now " + nw)))
-                            .Add(new Button("Unity skin").OnClicked(s => UI.ByID<Window>("window").Skin(null)).Skin(null, true))
-                            .Add(new Button("KSP skin").OnClicked(s => UI.ByID<Window>("window").Skin(HighLogic.Skin)))
+                            .Add(new Button("Unity skin").OnClicked(s => ui.ByID<Window>("window").Skin(null)).Skin(null, true))
+                            .Add(new Button("KSP skin").OnClicked(s => ui.ByID<Window>("window").Skin(HighLogic.Skin)))
                         )
                         .AddPage(
                             "Page 2",
@@ -78,19 +78,19 @@ namespace KspExample
                         .AddPage(
                             "Page 3",
                             new VerticalPanel()
-                            //.ID("panel")
-                           // .Add(new Button("This button adds controls")
-                           //     .OnClicked(source => Control.ByID<VerticalPanel>("panel").Add(new Button("Hello!")))
-                           // )
+                            .ID("panel")
+                            .Add(new Button("This button adds controls")
+                                .OnClicked(source => ui.ByID<VerticalPanel>("panel").Add(new Button("Hello!")))
+                            )
                         )
                         .AddPage(
                             "Page 4",
                             new TextArea()
                         )
-                    ).Title().BindOneWay(()=>"title is " + UI.ByID<PasswordField>("pw1").Password())
+                    ).Title().BindOneWay(()=>"title is " + ui.ByID<PasswordField>("pw1").Password())
                 );
             }
-            gui.OnGUI();
+            ui.OnGUI();
         }
     }
 }

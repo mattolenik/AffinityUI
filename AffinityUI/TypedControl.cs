@@ -27,7 +27,7 @@ namespace AffinityUI
 
         public new TSelf ID(string id)
         {
-            UI.RegisterID(this, id);
+            base.ID(id);
             return this as TSelf;
         }
 
