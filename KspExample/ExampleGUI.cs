@@ -80,7 +80,9 @@ namespace KspExample
                             new VerticalPanel()
                             .ID("panel")
                             .Add(new Button("This button adds controls")
-                                .OnClicked(source => ui.ByID<VerticalPanel>("panel").Add(new Button("Hello!")))
+                                .OnClicked(src => ui.ByID<VerticalPanel>("panel").Add(
+                                    new Button("Hello!").OnClicked(s => s.ParentAs<VerticalPanel>().Remove(s))
+                                ))
                             )
                         )
                         .AddPage(

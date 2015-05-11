@@ -36,6 +36,11 @@ namespace AffinityUI
         /// <value>The parent control.</value>
 		public Control Parent { get; protected internal set; }
 
+        public TControl ParentAs<TControl>() where TControl : Control
+        {
+            return Parent as TControl;
+        }
+
         /// <summary>
         /// Sets the position of the control.
         /// </summary>

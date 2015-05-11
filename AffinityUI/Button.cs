@@ -6,7 +6,7 @@ namespace AffinityUI
 	/// <summary>
 	/// Handler type for button click events.
 	/// </summary>
-	public delegate void ButtonClickHandler<TSource>(TSource source);
+	public delegate void ButtonClickHandler<TSource>(TSource src);
 
 	/// <summary>
 	/// A clickable button.
