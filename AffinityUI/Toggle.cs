@@ -46,11 +46,6 @@ namespace AffinityUI
             return _isChecked;
         }
 
-		/// <summary>
-		/// Sets the initial toggle value.
-		/// </summary>
-		/// <param name="value">The initial value.</param>
-		/// <returns>this instance</returns>
 		public Toggle IsChecked(bool value)
 		{
 			_isChecked.Value = value;

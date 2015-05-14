@@ -8,7 +8,7 @@ using UnityEngine;
 namespace AffinityUI
 {
 	/// <summary>
-	/// Generic base class for controls that have content.
+	/// Generic base class for controls that have text and image content.
 	/// </summary>
 	/// <typeparam name="TSelf">The type of the implementing subclass.</typeparam>
 	public abstract class ContentControl<TSelf> : TypedControl<TSelf> where TSelf : Control

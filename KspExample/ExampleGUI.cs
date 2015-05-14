@@ -71,6 +71,7 @@ namespace KspExample
                             .Add(new Button("Another Button")
                                 .Image(buttonIcon)
                             )
+                            .Add(new TextField("Text goes here"))
                             .Add(new Toggle("Checkbox 1")
                                 .Visible().BindOneWay(() => Option1)
                             )

@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace AffinityUI
 {
-	/// <summary>
-	/// An inline text field.
-	/// </summary>
-	public class TextField : ContentControl<TextField>
-	{
+    /// <summary>
+    /// An inline text field.
+    /// </summary>
+    public class TextField : TypedControl<TextField>
+    {
         int maxLength;
 
         BindableProperty<TextField, string> text;
@@ -37,40 +37,40 @@ namespace AffinityUI
             return this;
         }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="TextField"/> class.
-		/// </summary>
-		public TextField()
-			: base()
-		{
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextField"/> class.
+        /// </summary>
+        public TextField()
+            : this(string.Empty)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextField"/> class.
+        /// </summary>
+        /// <param name="label">The label text.</param>
+        public TextField(string text)
+            : base()
+        {
             Style(() => GUI.skin.textField);
-			text = new BindableProperty<TextField, string>(this);
-			maxLength = Int32.MaxValue;
-		}
+            this.text = new BindableProperty<TextField, string>(this, text);
+            maxLength = int.MaxValue;
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="TextField"/> class.
-		/// </summary>
-		/// <param name="label">The label text.</param>
-		public TextField(string label) : this()
-		{
-            Label(label);
-		}
-
-		/// <summary>
-		/// Called when layout is done using GUI.
-		/// </summary>
-		protected override void Layout_GUI()
-		{
+        /// <summary>
+        /// Called when layout is done using GUI.
+        /// </summary>
+        protected override void Layout_GUI()
+        {
             Text(GUI.TextField(Position(), Text(), maxLength, Style()));
-		}
+        }
 
-		/// <summary>
-		/// Called when layout is done using GUILayout.
-		/// </summary>
-		protected override void Layout_GUILayout()
-		{
+        /// <summary>
+        /// Called when layout is done using GUILayout.
+        /// </summary>
+        protected override void Layout_GUILayout()
+        {
             Text(GUILayout.TextField(Text(), maxLength, Style(), LayoutOptions()));
-		}
-	}
+        }
+    }
 }

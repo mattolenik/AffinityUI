@@ -5,7 +5,7 @@ namespace AffinityUI
 	/// <summary>
 	/// Change notification function signature.
 	/// </summary>
-	public delegate void PropertyChangedEventHandler<TSource, TValue>(TSource source, TValue oldValue, TValue newValue);
+	public delegate void PropertyChangedEventHandler<TSource, TValue>(TSource src, TValue old, TValue nw);
 
 	/// <summary>
 	/// Encapsulates databinding and update notification functionality for control properties.
@@ -37,7 +37,7 @@ namespace AffinityUI
 				{
 					return _binder.Direction;
 				}
-				throw new InvalidOperationException("Property is not bound.");
+                throw new InvalidOperationException("Property is not bound.");
 			}
 		}
 

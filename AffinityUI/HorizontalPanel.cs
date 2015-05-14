@@ -16,7 +16,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void OnBeginLayout_GUILayout()
 		{
-			GUILayout.BeginHorizontal();
+            GUILayout.BeginHorizontal(Content(), Style(), LayoutOptions());
 		}
 
 		/// <summary>

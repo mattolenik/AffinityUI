@@ -11,10 +11,6 @@ namespace AffinityUI
 	/// </summary>
     public class VerticalPanel : Composite<VerticalPanel>
 	{
-        public VerticalPanel() : base()
-        {
-        }
-
 		/// <summary>
 		/// Called when layout begins when using GUILayout.
 		/// </summary>
