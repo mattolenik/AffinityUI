@@ -6,32 +6,32 @@ using UnityEngine;
 
 namespace AffinityUI
 {
-	/// <summary>
-	/// A composite control that's composed of zero or more child controls.
-	/// </summary>
+    /// <summary>
+    /// A composite control that's composed of zero or more child controls.
+    /// </summary>
     public abstract class Composite<TSelf> : ContentControl<TSelf>, IEnumerable<Control> where TSelf : Control
-	{
-		 IList<Control> children = new List<Control>();
+    {
+        List<Control> children = new List<Control>();
 
-		/// <summary>
-		/// Gets a list of child controls.
-		/// </summary>
-		/// <value>The children.</value>
-		public IList<Control> Children
-		{
-			get { return children; }
-		}
+        /// <summary>
+        /// Gets a list of child controls.
+        /// </summary>
+        /// <value>The children.</value>
+        public IList<Control> Children
+        {
+            get { return children; }
+        }
 
-		/// <summary>
-		/// Called when layout begins. Automatically calls <see cref="OnBeginLayout_GUILayout"/>
-		/// or <see cref="OnBeginLayout_GUI"/>.
-		/// </summary>
-		/// <remarks>
-		/// Override this method if you need complete control over GUI layout. Otherwise override
-		/// <see cref="OnBeginLayout_GUILayout"/>
-		/// </remarks>
-		protected virtual void OnBeginLayout()
-		{
+        /// <summary>
+        /// Called when layout begins. Automatically calls <see cref="OnBeginLayout_GUILayout"/>
+        /// or <see cref="OnBeginLayout_GUI"/>.
+        /// </summary>
+        /// <remarks>
+        /// Override this method if you need complete control over GUI layout. Otherwise override
+        /// <see cref="OnBeginLayout_GUILayout"/>
+        /// </remarks>
+        protected virtual void OnBeginLayout()
+        {
             switch (Context.Layout)
             {
                 case LayoutTarget.GUI:
@@ -43,17 +43,17 @@ namespace AffinityUI
                 default:
                     throw new InvalidOperationException("Layout must be either GUI or GUILayout");
             }
-		}
+        }
 
-		/// <summary>
-		/// Called when layout end. Automatically calls <see cref="OnBeginLayout_GUILayout"/> or
-		/// <see cref="OnBeginLayout_GUI"/>.
-		/// </summary>
-		/// <remarks>
-		/// Override this method if you need complete control over GUI layout. Otherwise override
-		/// <see cref="OnEndLayout_GUILayout"/>
-		/// </remarks>
-		protected virtual void OnEndLayout()
+        /// <summary>
+        /// Called when layout end. Automatically calls <see cref="OnBeginLayout_GUILayout"/> or
+        /// <see cref="OnBeginLayout_GUI"/>.
+        /// </summary>
+        /// <remarks>
+        /// Override this method if you need complete control over GUI layout. Otherwise override
+        /// <see cref="OnEndLayout_GUILayout"/>
+        /// </remarks>
+        protected virtual void OnEndLayout()
         {
             switch (Context.Layout)
             {
@@ -68,89 +68,98 @@ namespace AffinityUI
             }
         }
 
-		/// <summary>
-		/// Called when layout begins using GUI.
-		/// </summary>
-		protected virtual void OnBeginLayout_GUI() { }
+        /// <summary>
+        /// Called when layout begins using GUI.
+        /// </summary>
+        protected virtual void OnBeginLayout_GUI()
+        {
+        }
 
-		/// <summary>
-		/// Called when layout ends using GUI.
-		/// </summary>
-		protected virtual void OnEndLayout_GUI() { }
-		/// <summary>
-		/// Called when layout begins when using GUILayout.
-		/// </summary>
-		protected virtual void OnBeginLayout_GUILayout() { }
+        /// <summary>
+        /// Called when layout ends using GUI.
+        /// </summary>
+        protected virtual void OnEndLayout_GUI()
+        {
+        }
 
-		/// <summary>
-		/// Called when layout ends when using GUILayout.
-		/// </summary>
-		protected virtual void OnEndLayout_GUILayout() { }
+        /// <summary>
+        /// Called when layout begins when using GUILayout.
+        /// </summary>
+        protected virtual void OnBeginLayout_GUILayout()
+        {
+        }
 
-		public override UI Context
-		{
-			get
-			{
-				return base.Context;
-			}
-			set
-			{
-				base.Context = value;
-				foreach (var control in Children)
-				{
-					control.Context = value;
-				}
-			}
-		}
+        /// <summary>
+        /// Called when layout ends when using GUILayout.
+        /// </summary>
+        protected virtual void OnEndLayout_GUILayout()
+        {
+        }
 
-		/// <summary>
-		/// Adds the specified control.
-		/// </summary>
-		/// <typeparam name="TControl">The type of the control.</typeparam>
-		/// <param name="control">The control.</param>
-		/// <returns>The current composite instance.</returns>
+        public override UI Context
+        {
+            get
+            {
+                return base.Context;
+            }
+            set
+            {
+                base.Context = value;
+                foreach (var control in Children)
+                {
+                    control.Context = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds the specified control.
+        /// </summary>
+        /// <typeparam name="TControl">The type of the control.</typeparam>
+        /// <param name="control">The control.</param>
+        /// <returns>The current composite instance.</returns>
         public TSelf Add(Control control)
-		{
-			Children.Add(control);
-			control.Context = Context;
-			control.Parent = this;
+        {
+            Children.Add(control);
+            control.Context = Context;
+            control.Parent = this;
             if (!control.IndependantSkin)
             {
                 control.SkinValue = SkinValue;
             }
             return this as TSelf;
-		}
+        }
 
-		/// <summary>
-		/// Removes the specified control.
-		/// </summary>
-		/// <param name="control">The control.</param>
-		/// <returns>The current composite instance.</returns>
+        /// <summary>
+        /// Removes the specified control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <returns>The current composite instance.</returns>
         public TSelf Remove(Control control)
-		{
-			Children.Remove(control);
-			control.Parent = null;
+        {
+            Children.Remove(control);
+            control.Parent = null;
             control.Context = null;
             return this as TSelf;
-		}
+        }
 
-		public override void Layout()
-		{
+        public override void Layout()
+        {
             if (!Visible())
             {
                 return;
             }
             GUI.skin = SkinValue;
 
-			OnBeginLayout();
+            OnBeginLayout();
 
-			foreach (var control in Children)
-			{
+            foreach (var control in Children)
+            {
                 control.Layout();
-			}
+            }
 
-			OnEndLayout();
-		}
+            OnEndLayout();
+        }
 
         public TSelf Skin(GUISkin skin)
         {

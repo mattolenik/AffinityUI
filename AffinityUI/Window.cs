@@ -5,70 +5,71 @@ namespace AffinityUI
 {
     public class Window : TypedControl<Window>
     {
-        readonly System.Random _rand = new System.Random();
-        readonly int _id;
-        Control _content;
-        Rect _windowRect;
-        Rect _dragArea;
-        bool _autoDrag;
+        readonly System.Random rand = new System.Random();
+        readonly int id;
+        Control content;
+        Rect windowRect;
+        Rect dragArea;
+        bool autoDrag;
+        BindableProperty<Window, string> text;
 
-        BindableProperty<Window, string> _text;
+        public int ID { get { return id; } }
 
-        public int ID { get { return _id; }}
-
-        protected Window() : base()
+        protected Window()
+            : base()
         {
-            _id = _rand.Next();
+            id = rand.Next();
             Style(() => GUI.skin.window);
-            _text = new BindableProperty<Window, string>(this);
+            text = new BindableProperty<Window, string>(this);
         }
 
-        public Window(Rect windowRect) : this()
+        public Window(Rect windowRect)
+            : this()
         {
-            _windowRect = windowRect;
+            this.windowRect = windowRect;
         }
 
         public Window Content(Control content)
         {
-            _content = content;
-            _content.Parent = this;
-            _content.Context = Context;
-            _content.SkinValue = SkinValue;
+            this.content = content;
+            content.Parent = this;
+            content.Context = Context;
+            content.SkinValue = SkinValue;
             return this;
         }
 
         public BindableProperty<Window, string> Title()
         {
-            return _text;
+            return text;
         }
 
         public Window Title(string text)
         {
-            _text.Value = text;
+            this.text.Value = text;
             return this;
         }
 
         public Window Drag(Rect dragArea)
         {
-            _dragArea = dragArea;
+            this.dragArea = dragArea;
             return this;
         }
 
         public Window Drag()
         {
-            _autoDrag = true;
+            autoDrag = true;
             return this;
         }
 
         public Window DragTitlebar(int height)
         {
-            _dragArea = new Rect(0, 0, _windowRect.width, height);
+            dragArea = new Rect(0, 0, windowRect.width, height);
             return this;
         }
 
         public Window DragTitlebar()
         {
-            _dragArea = new Rect(0, 0, _windowRect.width, Style().border.top);
+            dragArea = new Rect(0, 0, windowRect.width, Style().border.top);
             return this;
         }
 
@@ -81,34 +82,34 @@ namespace AffinityUI
             set
             {
                 base.SkinValue = value;
-                if (_content != null)
+                if (content != null)
                 {
-                    _content.SkinValue = value;
+                    content.SkinValue = value;
                 }
             }
         }
 
         protected override void Layout_GUI()
         {
-            _windowRect = GUI.Window(_id, _windowRect, windowFunc, _text);
+            windowRect = GUI.Window(id, windowRect, windowFunc, text);
         }
 
         protected override void Layout_GUILayout()
         {
-            _windowRect = GUILayout.Window(_id, _windowRect, windowFunc, _text, Style(), LayoutOptions());
+            windowRect = GUILayout.Window(id, windowRect, windowFunc, text, Style(), LayoutOptions());
         }
 
         void windowFunc(int windowID)
         {
-            if (_autoDrag)
+            if (autoDrag)
             {
                 GUI.DragWindow();
             }
             else
             {
-                GUI.DragWindow(_dragArea);
+                GUI.DragWindow(dragArea);
             }
-            _content.Layout();
+            content.Layout();
         }
 
         public override UI Context
@@ -120,9 +121,9 @@ namespace AffinityUI
             set
             {
                 base.Context = value;
-                if (_content != null)
+                if (content != null)
                 {
-                    _content.Context = value;
+                    content.Context = value;
                 }
             }
         }

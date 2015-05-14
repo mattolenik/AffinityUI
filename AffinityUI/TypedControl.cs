@@ -12,17 +12,14 @@ namespace AffinityUI
 	/// <typeparam name="TSelf">The type of the implementing subclass.</typeparam>
 	public abstract class TypedControl<TSelf> : Control where TSelf : Control
 	{
-        GUILayoutOption[] _layoutOptions;
+        GUILayoutOption[] layoutOptions;
+        Func<GUIStyle> styleGetter = () => GUIStyle.none;
+        BindableProperty<TSelf, bool> visible;
 
-        Func<GUIStyle> _styleFunc = () => GUIStyle.none;
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ControlBase&lt;TSelf&gt;"/> class.
-		/// </summary>
 		protected TypedControl()
 			: base()
 		{
-            _visible = new BindableProperty<TSelf, bool>(this as TSelf, true);
+            visible = new BindableProperty<TSelf, bool>(this as TSelf, true);
 		}
 
         public new TSelf ID(string id)
@@ -44,30 +41,28 @@ namespace AffinityUI
 
         public GUILayoutOption[] LayoutOptions()
         {
-            return _layoutOptions;
+            return layoutOptions;
         }
-
-        BindableProperty<TSelf, bool> _visible;
 
 		public TSelf Visible(bool visible)
 		{
-            _visible.Value = visible;
+            this.visible.Value = visible;
 			return this as TSelf;
 		}
 
         public BindableProperty<TSelf, bool> Visible()
         {
-            return _visible;
+            return visible;
         }
 
         public GUIStyle Style()
         {
-            return _styleFunc();
+            return styleGetter();
         }
 
         public TSelf Style(Func<GUIStyle> styleGetter)
         {
-            _styleFunc = styleGetter;
+            this.styleGetter = styleGetter;
             return this as TSelf;
         }
 

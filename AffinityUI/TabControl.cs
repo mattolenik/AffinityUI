@@ -12,15 +12,14 @@ namespace AffinityUI
     public class TabControl : TypedControl<TabControl>
     {
         SelectionGrid tabButtons;
-
         Dictionary<int, Control> pageMap = new Dictionary<int, Control>();
-
         int currentPage = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TabControl"/> class.
         /// </summary>
-        public TabControl() : base()
+        public TabControl()
+            : base()
         {
             tabButtons = new SelectionGrid();
             tabButtons.Selected().OnPropertyChanged((source, old, nw) => ShowTab(nw));
@@ -68,7 +67,7 @@ namespace AffinityUI
             set
             {
                 base.SkinValue = value;
-                foreach(var page in pageMap.Values)
+                foreach (var page in pageMap.Values)
                 {
                     if (!page.IndependantSkin)
                     {

@@ -8,43 +8,41 @@ namespace AffinityUI
 	/// </summary>
 	public class PasswordField : ContentControl<PasswordField>
 	{
-        BindableProperty<PasswordField, string> _password;
-
-        char _mask;
-
-        int _maxLength;
+        BindableProperty<PasswordField, string> password;
+        char mask;
+        int maxLength;
 
         public BindableProperty<PasswordField, string> Password()
         {
-            return _password;
+            return password;
         }
 
         public PasswordField Password(string text)
         {
-            _password.Value = text;
+            password.Value = text;
             return this;
         }
 
         public PasswordField Mask(char mask)
         {
-            _mask = mask;
+            this.mask = mask;
             return this;
         }
 
         public char Mask()
         {
-            return _mask;
+            return mask;
         }
 
         public PasswordField MaxLength(int maxLength)
         {
-            _maxLength = maxLength;
+            this.maxLength = maxLength;
             return this;
         }
 
         public int MaxLength()
         {
-            return _maxLength;
+            return maxLength;
         }
 
 		/// <summary>
@@ -53,10 +51,10 @@ namespace AffinityUI
 		public PasswordField()
 			: base()
 		{
-			_mask = '*';
-			_maxLength = Int32.MaxValue;
+			mask = '*';
+			maxLength = Int32.MaxValue;
             Style(() => GUI.skin.textField);
-            _password = new BindableProperty<PasswordField, string>(this, string.Empty);
+            password = new BindableProperty<PasswordField, string>(this, string.Empty);
 		}
 
 		/// <summary>
@@ -76,7 +74,7 @@ namespace AffinityUI
 		/// <returns>this instance</returns>
 		public PasswordField OnPasswordChanged(PropertyChangedEventHandler<PasswordField, string> handler)
 		{
-			_password.PropertyChanged += handler;
+			password.PropertyChanged += handler;
 			return this;
 		}
 
@@ -85,7 +83,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUI()
 		{
-            Password(GUI.PasswordField(Position(), Password(), _mask, _maxLength, Style()));
+            Password(GUI.PasswordField(Position(), Password(), mask, maxLength, Style()));
 		}
 
 		/// <summary>
@@ -93,7 +91,7 @@ namespace AffinityUI
 		/// </summary>
 		protected override void Layout_GUILayout()
 		{
-            Password(GUILayout.PasswordField(Password(), _mask, _maxLength, Style(), LayoutOptions()));
+            Password(GUILayout.PasswordField(Password(), mask, maxLength, Style(), LayoutOptions()));
 		}
 	}
 }

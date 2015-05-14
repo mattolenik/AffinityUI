@@ -12,7 +12,6 @@ namespace AffinityUI
     public class TextField : TypedControl<TextField>
     {
         int maxLength;
-
         BindableProperty<TextField, string> text;
 
         public BindableProperty<TextField, string> Text()

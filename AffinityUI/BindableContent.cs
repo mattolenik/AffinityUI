@@ -12,43 +12,41 @@ namespace AffinityUI
     public class BindableContent<TOwner>
     {
         TOwner owner;
-
-        BindableProperty<TOwner, string> _label;
-
-        GUIContent _content;
+        BindableProperty<TOwner, string> label;
+        GUIContent content;
 
         public TOwner _ { get { return owner; } }
 
         public BindableProperty<TOwner, string> Label()
         {
-            return _label;
+            return label;
         }
 
         public BindableContent<TOwner> Label(string text)
         {
-            _label.Value = text;
+            label.Value = text;
             return this;
         }
 
         public GUIContent Content()
         {
-            return _content;
+            return content;
         }
 
         public BindableContent<TOwner> Content(GUIContent content)
         {
-            _content = content;
+            this.content = content;
             return this;
         }
 
         public Texture Image()
         {
-            return _content.image;
+            return content.image;
         }
 
         public BindableContent<TOwner> Image(Texture image)
         {
-            _content.image = image;
+            content.image = image;
             return this;
         }
 
@@ -60,14 +58,14 @@ namespace AffinityUI
         public BindableContent(TOwner owner, GUIContent content)
         {
             this.owner = owner;
-            _content = content;
-            _label = new BindableProperty<TOwner, string>(owner);
-            _label.OnPropertyChanged(((src, old, nw) => _content.text = nw));
+            this.content = content;
+            label = new BindableProperty<TOwner, string>(owner);
+            label.OnPropertyChanged(((src, old, nw) => content.text = nw));
         }
 
         public void UpdateBinding()
         {
-            _label.UpdateBinding();
+            label.UpdateBinding();
         }
     }
 }

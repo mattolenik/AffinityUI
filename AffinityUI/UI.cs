@@ -10,7 +10,9 @@ namespace AffinityUI
         readonly Dictionary<Control, string> idsByControl = new Dictionary<Control, string>();
 
         internal LayoutTarget Layout { get; set; }
+
         internal MonoBehaviour Owner { get; set; }
+
         internal Control Content { get; set; }
 
         internal void RegisterID(Control control, string id)

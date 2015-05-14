@@ -7,47 +7,47 @@ using UnityEngine;
 
 namespace AffinityUI
 {
-	/// <summary>
-	/// Generic base class for controls that have text and image content.
-	/// </summary>
-	/// <typeparam name="TSelf">The type of the implementing subclass.</typeparam>
-	public abstract class ContentControl<TSelf> : TypedControl<TSelf> where TSelf : Control
-	{
-        BindableContent<TSelf> _content;
+    /// <summary>
+    /// Generic base class for controls that have text and image content.
+    /// </summary>
+    /// <typeparam name="TSelf">The type of the implementing subclass.</typeparam>
+    public abstract class ContentControl<TSelf> : TypedControl<TSelf> where TSelf : Control
+    {
+        BindableContent<TSelf> content;
         Tooltip<TSelf> tooltip;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ContentControl&lt;TSelf&gt;"/> class.
-		/// </summary>
-		protected ContentControl()
-			: base()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentControl&lt;TSelf&gt;"/> class.
+        /// </summary>
+        protected ContentControl()
+            : base()
         {
-            _content = new BindableContent<TSelf>(this as TSelf);
+            content = new BindableContent<TSelf>(this as TSelf);
             tooltip = new Tooltip<TSelf>(this as TSelf);
         }
 
         public GUIContent Content()
         {
-            return _content.Content();
+            return content.Content();
         }
 
         public TSelf Content(GUIContent content)
         {
-            _content = new BindableContent<TSelf>(this as TSelf, content);
+            this.content = new BindableContent<TSelf>(this as TSelf, content);
             return this as TSelf;
         }
 
         public BindableProperty<TSelf, string> Label()
         {
-            return _content.Label();
+            return content.Label();
         }
 
         public TSelf Label(string text)
         {
-            _content.Label(text);
+            content.Label(text);
             return this as TSelf;
         }
-            
+
         public BindableProperty<TSelf, string> Tooltip()
         {
             return tooltip.Text();
@@ -61,26 +61,26 @@ namespace AffinityUI
 
         public Texture Image()
         {
-            return _content.Image();
+            return content.Image();
         }
 
         public TSelf Image(Texture image)
         {
-            _content.Image(image);
+            content.Image(image);
             return this as TSelf;
         }
 
-		/// <summary>
-		/// Performs the necessary calls to UnityGUI to perform layout or updates.
-		/// Should be called in the OnGUI methods.
-		/// </summary>
-		/// <remarks>
-		/// Only override this method if you need complete control over GUI layout.
-		/// This method automatically calls <see cref="Control.Layout_GUI"/> or
-		/// <see cref="Control.Layout_GUILayout"/>.
-		/// </remarks>
-		public override void Layout()
-		{
+        /// <summary>
+        /// Performs the necessary calls to UnityGUI to perform layout or updates.
+        /// Should be called in the OnGUI methods.
+        /// </summary>
+        /// <remarks>
+        /// Only override this method if you need complete control over GUI layout.
+        /// This method automatically calls <see cref="Control.Layout_GUI"/> or
+        /// <see cref="Control.Layout_GUILayout"/>.
+        /// </remarks>
+        public override void Layout()
+        {
             if (!Visible())
             {
                 return;
@@ -88,11 +88,12 @@ namespace AffinityUI
             UpdateBindings();
             base.Layout();
             tooltip.Layout();
-		}
+        }
 
         protected virtual void UpdateBindings()
         {
-            _content.UpdateBinding();
+            content.UpdateBinding();
+            tooltip.UpdateBinding();
         }
-	}
+    }
 }

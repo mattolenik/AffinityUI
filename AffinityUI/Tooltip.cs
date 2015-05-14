@@ -11,11 +11,8 @@ namespace AffinityUI
     public class Tooltip<TOwner> : ITooltipStyle where TOwner : Control
     {
         TOwner owner;
-
         BindableProperty<TOwner, string> tooltip;
-
         Func<Rect> tooltipAreaGetter;
-
         Func<GUIStyle> styleGetter;
 
         public Tooltip(TOwner owner)
@@ -78,6 +75,11 @@ namespace AffinityUI
             {
                 renderer.StopTooltip(this);
             }
+        }
+
+        public void UpdateBinding()
+        {
+            tooltip.UpdateBinding();
         }
     }
 }
