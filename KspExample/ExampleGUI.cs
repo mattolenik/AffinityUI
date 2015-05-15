@@ -72,11 +72,12 @@ namespace KspExample
                             // Bind the value of the checkbox to the Option1 variable
                             .IsChecked().BindTwoWay(() => Option1, v => Option1 = v)
                             // Print to the console each time the value changes
-                            .OnToggled((source, old, nw) => print(source.Label() + " is now " + nw)))
-                        .Add(
-                            new Button("Unity skin")
+                            .OnToggled((source, old, nw) => print(source.Label() + " is now " + nw))
+                        )
+                        .Add(new Button("Unity skin")
                             .OnClicked(s => ui.ByID<Window>("window").Skin(null))
-                            .Skin(null, true))
+                            .Skin(null, true)
+                        )
                         .Add(
                             new Button("KSP skin")
                             .OnClicked(s => ui.ByID<Window>("window").Skin(HighLogic.Skin))
