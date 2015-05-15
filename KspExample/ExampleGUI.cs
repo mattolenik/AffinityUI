@@ -94,12 +94,16 @@ namespace KspExample
                         )
                     )
                     .AddPage("Page 3",
-                        new VerticalPanel()
-                        .ID("panel")
-                        .Add(new Button("This button adds controls")
-                            .OnClicked(src => ui.ByID<VerticalPanel>("panel").Add(
-                                new Button("Hello!").OnClicked(s => s.ParentAs<VerticalPanel>().Remove(s))
-                            ))
+                        new ScrollView()
+                        .AlwaysShowHorizontal()
+                        .AlwaysShowVertical()
+                        .Add(new VerticalPanel()
+                            .ID("panel")
+                            .Add(new Button("This button adds controls")
+                                .OnClicked(src => ui.ByID<VerticalPanel>("panel").Add(
+                                    new Button("Hello!").OnClicked(s => s.ParentAs<VerticalPanel>().Remove(s))
+                                ))
+                            )
                         )
                     )
                     .AddPage("Page 4",

@@ -23,11 +23,6 @@ namespace AffinityUI
             this.dimensions = dimensions;
         }
 
-        /// <summary>
-        /// Sets the <see cref="Dimensions"/> property.
-        /// </summary>
-        /// <param name="dimensions">The dimensions.</param>
-        /// <returns>this instance</returns>
         public Area Dimensions(Rect dimensions)
         {
             this.dimensions = dimensions;

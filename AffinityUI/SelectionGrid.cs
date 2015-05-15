@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace AffinityUI
 {
+    /// <summary>
+    /// A selection grid that also functions as a toolbar. By default, it will be a one row
+    /// toolbar. If XCount is set, it will be a multi-row selection grid.
+    /// </summary>
     public class SelectionGrid : TypedControl<SelectionGrid>
     {
         HashSet<BindableContent<SelectionGrid>> buttons;
