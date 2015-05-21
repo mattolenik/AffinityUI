@@ -101,3 +101,6 @@ Documentation is thin a the moment, but I'll improve it if I get some community 
 
 ## Building the Project
 It's just a standard Visual Studio/MonoDevelop solution. The only thing you have to do is re-symlink UnityEngine.dll and Assembly-CSharp.dll under lib/ to point to your Unity installation (or game, such as KSP). You can also just copy the binaries into lib/.
+
+## License
+MIT license, see LICENSE.md
