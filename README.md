@@ -95,6 +95,6 @@ UI.GUILayout(this, new Window(new Rect(100, 100, 500, 500))
 
 ```
 
-It's quite a bit of code, but a fraction of what you'd need to do it with raw Unity GUI, and also much, much easier to write and maintain.
+It's quite a bit of code, but a fraction of what you'd need to do it with raw Unity GUI, and also much, much easier to write and maintain. This example is a bit long because it's meant to showcase most of the features in the framework.
 
 Documentation is thin a the moment, but I'll improve it if I get some community feedback. I put together this project years ago but lost interest in game development as more pressing life issues took over. I'm re-releasing it with the KSP community in mind. If you think this is useful to you, please drop me a line!
