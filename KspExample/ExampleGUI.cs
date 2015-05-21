@@ -82,17 +82,17 @@ namespace KspExample
                             .Skin(HighLogic.Skin, true)
                         )
                         .Add(new HorizontalPanel()
-                                .Add(new TextField("0")
-                                    .ID("sl1")
-                                    .LayoutOptions(GUILayout.MaxWidth(50))
+                            .Add(new TextField("0")
+                                .ID("sl1")
+                                .LayoutOptions(GUILayout.MaxWidth(50))
+                            )
+                            .Add(new HorizontalSlider(0, 50)
+                                .LayoutOptions(GUILayout.ExpandWidth(true))
+                                .Value().BindTwoWay(
+                                    () => ui.ByID<TextField>("sl1").Text().SafeToFloat(),
+                                    (v) => ui.ByID<TextField>("sl1").Text(v.ToString("0.00"))
                                 )
-                                .Add(new HorizontalSlider(0, 50)
-                                    .LayoutOptions(GUILayout.ExpandWidth(true))
-                                    .Value().BindTwoWay(
-                                        () => ui.ByID<TextField>("sl1").Text().SafeToFloat(),
-                                        (v) => ui.ByID<TextField>("sl1").Text(v.ToString("0.00"))
-                                    )
-                                )
+                            )
                         )
                     )
                     .AddPage("Page 2",
@@ -100,8 +100,8 @@ namespace KspExample
                         .Add(new Button("Another Button")
                             .Image(buttonIcon)
                         )
-                        .Add(new TextField("Text goes here"))
                         .Add(new AutoSpace(50))
+                        .Add(new TextField("Text goes here"))
                         .Add(new Toggle("Checkbox 1")
                             .Visible().BindOneWay(() => Option1)
                         )
