@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 namespace AffinityUI
 {
@@ -69,6 +70,7 @@ namespace AffinityUI
         /// </summary>
         protected override void Layout_GUILayout()
         {
+
             Text(GUILayout.TextField(Text(), maxLength, Style(), LayoutOptions()));
         }
     }

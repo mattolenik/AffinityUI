@@ -23,7 +23,7 @@ namespace AffinityUI
             styleGetter = () => GUI.skin.label;
         }
 
-        public TOwner _ { get { return owner; } }
+        public TOwner OK { get { return owner; } }
 
         public BindableProperty<TOwner, string> Text()
         {

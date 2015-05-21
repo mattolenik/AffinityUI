@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -15,7 +14,7 @@ namespace AffinityUI
         BindableProperty<TOwner, string> label;
         GUIContent content;
 
-        public TOwner _ { get { return owner; } }
+        public TOwner OK { get { return owner; } }
 
         public BindableProperty<TOwner, string> Label()
         {

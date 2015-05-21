@@ -45,20 +45,19 @@ namespace KspExample
                 .Title("Window Title")
                 .DragTitlebar()
                 .Skin(HighLogic.Skin)
-                .Content(
-                    new TabControl()
+                .Content(new TabControl()
                     .AddPage("Page 1",
                         new VerticalPanel()
                         .Add(new Button("A Button")
                             .Tooltip("tooltip!")
-                            .Style(() => GUI.skin.textField)._
+                                .Style(() => GUI.skin.textField).OK
                             // This will print "A Button was clicked" on each click
                             .OnClicked(s => print(s.Label() + " was clicked"))
                             .Image(buttonIcon)
                         )
                         .Add(new PasswordField("Password")
                             .ID("pw1")
-                            .Tooltip("Your secret's safe with me")._
+                            .Tooltip("Your secret's safe with me").OK
                         )
                         .Add(new Toggle("Checkbox 1")
                             // Bind the value of the checkbox to the Option1 variable
@@ -78,10 +77,22 @@ namespace KspExample
                             .OnClicked(s => ui.ByID<Window>("window").Skin(null))
                             .Skin(null, true)
                         )
-                        .Add(
-                            new Button("KSP skin")
+                        .Add(new Button("KSP skin")
                             .OnClicked(s => ui.ByID<Window>("window").Skin(HighLogic.Skin))
                             .Skin(HighLogic.Skin, true)
+                        )
+                        .Add(new HorizontalPanel()
+                                .Add(new TextField("0")
+                                    .ID("sl1")
+                                    .LayoutOptions(GUILayout.MaxWidth(50))
+                                )
+                                .Add(new HorizontalSlider(0, 50)
+                                    .LayoutOptions(GUILayout.ExpandWidth(true))
+                                    .Value().BindTwoWay(
+                                        () => ui.ByID<TextField>("sl1").Text().SafeToFloat(),
+                                        (v) => ui.ByID<TextField>("sl1").Text(v.ToString("0.00"))
+                                    )
+                                )
                         )
                     )
                     .AddPage("Page 2",
@@ -102,8 +113,8 @@ namespace KspExample
                             .ID("panel")
                             .Add(new Button("This button adds controls")
                                 .OnClicked(src => ui.ByID<VerticalPanel>("panel").Add(
-                                    new Button("Hello!").OnClicked(s => s.ParentAs<VerticalPanel>().Remove(s))
-                                ))
+                                        new Button("Hello!").OnClicked(s => s.ParentAs<VerticalPanel>().Remove(s))
+                                    ))
                             )
                         )
                     )
@@ -111,7 +122,7 @@ namespace KspExample
                         new TextArea()
                     )
                 )
-                .Title().BindOneWay(()=>"title is " + ui.ByID<PasswordField>("pw1").Password())
+                .Title().BindOneWay(() => "title is " + ui.ByID<PasswordField>("pw1").Password())
             );
         }
     }

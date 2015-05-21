@@ -35,7 +35,7 @@ namespace AffinityUI
 		/// <returns>this instance</returns>
 		public TSelf LayoutOptions(params GUILayoutOption[] options)
 		{
-            LayoutOptions(options);
+            layoutOptions = options;
 			return this as TSelf;
 		}
 
