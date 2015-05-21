@@ -67,9 +67,9 @@
     <Compile Include="Tooltip.cs" />
     <Compile Include="ScrollView.cs" />
     <Compile Include="HorizontalSlider.cs" />
-    <Compile Include="Space.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="VerticalSlider.cs" />
+    <Compile Include="AutoSpace.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
